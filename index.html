@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Welcome to 2decomp&amp;fft V2’s documentation! &#8212; 2decomp_doc  documentation</title>
+    <title>Welcome to the documentation for the 2decomp&amp;fft library! &#8212; 2decomp_doc  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -30,8 +30,38 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="welcome-to-2decomp-fft-v2-s-documentation">
-<h1>Welcome to 2decomp&amp;fft V2’s documentation!<a class="headerlink" href="#welcome-to-2decomp-fft-v2-s-documentation" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="welcome-to-the-documentation-for-the-2decomp-fft-library">
+<h1>Welcome to the documentation for the 2decomp&amp;fft library!<a class="headerlink" href="#welcome-to-the-documentation-for-the-2decomp-fft-library" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This website is still <strong>under development</strong>!</p>
+</div>
+<p>The 2DECOMP&amp;FFT library is a software framework written in modern Fortran to build large-scale parallel applications. It is designed for applications using three-dimensional structured mesh and spatially implicit numerical algorithms. At the foundation it implements a general-purpose 2D pencil decomposition for data distribution. On top it provides a highly scalable and efficient interface to perform three-dimensional distributed Fast Fourier Transforms. The library was originaly designed for CPUs only in the 2010’s. The new version has be designed to work on CPUs and (NVIDIA) GPUs. We will aim to expend the capabilities of the library in the future (and to fix bugs!).</p>
+</div>
+<div class="section" id="features">
+<h1><strong>Features</strong><a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<p>Here is a list of 2DECOMP&amp;FFT’s main features:</p>
+<p>-General-purpose 2D pencil decomposition module to support building large-scale parallel applications on supercomputers.</p>
+<p>-Highly scalable and efficient distributed Fast Fourier Transform module, supporting three dimensional FFTs (both complex-to-complex and real-to-complex/complex-to-real).</p>
+<p>-Halo-cell support allowing explicit message passing between neighbouring blocks.</p>
+<p>-Parallel I/O module to support the handling of large data sets.</p>
+<p>-Interface with most popular external FFT libraries.</p>
+<p><strong>2DECOMP&amp;FFT is designed to be:</strong></p>
+<p><strong>Scalable</strong> - The library and applications built upon it are known to scale well on thousands of CPU cores.</p>
+<p><strong>Flexible</strong> - Software framework to support building higher-level libraries and many types of applications.</p>
+<p><strong>User-friendly</strong> - Black-box implementation and very clean application programming interface hiding most communication details from applications.</p>
+<p><strong>Portable</strong> - Code tested on major hardware architectures, with different compilers.</p>
+</div>
+<div class="section" id="publication">
+<h1><strong>Publication</strong><a class="headerlink" href="#publication" title="Permalink to this headline">¶</a></h1>
+<ol class="upperalpha simple" start="14">
+<li><p>Li and S. Laizet, “2DECOMP&amp;FFT – A highly scalable 2D decomposition library and FFT interface”, Cray User Group 2010 conference, Edinburgh, 2010</p></li>
+</ol>
+<p><strong>a new paper is in preparation to introduce the new capabilities of the library</strong></p>
+</div>
+<div class="section" id="acknowledgements">
+<h1><strong>Acknowledgements</strong><a class="headerlink" href="#acknowledgements" title="Permalink to this headline">¶</a></h1>
+<p>The library was initially designed thanks to several projects funded under the HECToR Distributed Computational Science and Engineering (CSE) Service operated by NAG Ltd. The new library has been designed thanks to the support of EPSRC via the <a class="reference external" href="https://www.ukturbulence.co.uk/ccp-turbulence.html">CCP Turbulence</a> (EP/T026170/1).</p>
 <div class="toctree-wrapper compound">
 </div>
 </div>
