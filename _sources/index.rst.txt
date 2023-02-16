@@ -52,10 +52,8 @@ The library was initially designed thanks to several projects funded under the H
    :caption: Contents:
 
 
-
-Indices and tables
+Table of Contents
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+pages/installation.rst
+pages/domaindecomposition.rst
