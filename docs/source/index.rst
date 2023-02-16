@@ -51,9 +51,5 @@ The library was initially designed thanks to several projects funded under the H
    :maxdepth: 2
    :caption: Contents:
 
-
-Table of Contents
-==================
-
-pages/installation.rst
-pages/domaindecomposition.rst
+   pages/installation.rst
+   pages/domaindecomposition.rst
