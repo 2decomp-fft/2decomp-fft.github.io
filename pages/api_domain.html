@@ -32,6 +32,22 @@
             
   <div class="section" id="d-pencil-decomposition-api">
 <h1>2D Pencil Decomposition API<a class="headerlink" href="#d-pencil-decomposition-api" title="Permalink to this headline">¶</a></h1>
+<p>This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. The library interface is designed to be very simple. One can refer to the sample applications for a quick start.</p>
+<p>The 2D Pencil Decomposition API is defined in one Fortran module which should be used by applications:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d</span></code></p>
+</div></blockquote>
+<p><strong>Global Variables</strong></p>
+<p>Following is the list of global variables defined by the library that can be used in applications. Obviously these names should not be redefined in applications to avoid conflict. Also note that some variables contain duplicate or redundant information just to simplify the programming.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mytype</span></code> - Use this variable to define the KIND of floating-point data, e.g. real(mytype) :: var or complex(mytype) :: cvar. This makes it easy to switch between single precision and double precision (more details).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">real_type,</span> <span class="pre">complex_type</span></code> - These are the proper MPI datatypes to be used (for real and complex numbers, respectively) if applications need to call MPI library routines directly.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nx_global,</span> <span class="pre">ny_global,</span> <span class="pre">nz_global</span></code> - size of the global data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nproc</span></code> - the total number of MPI processes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrank</span></code> - the rank of the current MPI process.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xsize(i),</span> <span class="pre">ysize(i),</span> <span class="pre">zsize(i),</span> <span class="pre">i=1,2,3</span></code> - sizes of the sub-domains held by the current process. The first letter refers to the pencil orientation and the three 1D array elements contain the sub-domain sizes in X, Y and Z directions, respectively. In a 2D pencil decomposition, there is always one dimension which completely resides in local memory. So by definition xsize(1)==nx_global, ysize(2)==ny_global and zsize(3)==nz_global.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xstart(i),</span> <span class="pre">ystart(i),</span> <span class="pre">zstart(i),</span> <span class="pre">xend(i),</span> <span class="pre">yend(i),</span> <span class="pre">zend(i),</span> <span class="pre">i=1,2,3</span></code> - the starting and ending indices for each sub-domain, as in the global coordinate system. Obviously, it can be seen that xsize(i)=xend(i)-xstart(i)+1. It may be convenient for certain applications to use global coordinate (for example when extracting a 2D plane from a 3D domain, it is easier to know which process owns the plane if global index is used).</p></li>
+</ul>
 </div>
 
 
