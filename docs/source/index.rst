@@ -56,3 +56,4 @@ The library was initially designed thanks to several projects funded under the H
    pages/fft.rst
    pages/api.rst
    pages/benchmarks.rst
+   pages/publications.rst
