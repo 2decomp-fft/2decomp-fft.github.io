@@ -2,9 +2,11 @@
 Installation
 ============
 
-# Bulding and installing 2decomp-fft
+Bulding and installing 2decomp-fft
+==================================
 
-## Building
+Building
+===========
 
 The build system is driven by `cmake`. It is good practice to directly point to the MPI Fortran wrapper that you would like to use to guarantee consistency between Fortran compiler and MPI. This can be done by setting the default Fortran environmental variable 
 ```
@@ -56,7 +58,8 @@ Occasionally a clean build is required, this can be performed by running
 cmake --build $path_to_build_directory --target clean
 ```
 
-## GPU compilation
+GPU compilation
+===============
 
 The library can perform multi GPU offoloading using the NVHPC compiler suite for NVIDIA hardware. 
 The implementation is based on CUDA-aware MPI and NVIDIA Collective Communication Library (NCCL).
@@ -83,9 +86,11 @@ It is possible that your default C compiler is too recent and not supported by `
  
  At the moment the supported CUDA host compilers are `gcc11` and earlier. 
 
-## Linking from external codes
+Linking from external codes
+==============================
 
-### Codes using Makefiles
+Codes using Makefiles
+=========================
 
 When building a code that links 2decomp-fft using a Makefile you will need to add the include and link paths as appropriate (`inlude/` and `lib/` under the installation directory, respectively).
 ```
@@ -144,7 +149,8 @@ clean-decomp:
 	rm -f $(DECOMP_INSTALL_DIR)/lib/libdecomp.a
 ```
 
-## Profiling
+Profiling
+=========
 
 Profiling can be activated via `cmake` configuration, the recommended approach is to run the initial configuration as follows:
 ```
@@ -155,9 +161,11 @@ cmake -S $path_to_sources -B $path_to_build_directory -DENABLE_PROFILER=caliper
 where `ENABLE_PROFILER` is set to the profiling tool desired, currently supported values are: `caliper`.
 Note that when using `caliper` a C++ compiler is required as indicated in the above command line.
 
-## Miscellaneous
+Miscellaneous
+=============
 
-### List of preprocessor variables
+List of preprocessor variables
+==============================
 
 #### DEBUG
 
@@ -223,7 +231,8 @@ or modify the build configuration using `ccmake`.
 
 Note the legacy `fftw` interface lacks interface definitions and will fail when stricter compilation flags are used (e.g. when `-DCMAKE_BUILD_TYPE=Dev`) for this it is recommended to use `fftw_f03` which provides proper interfaces.
 
-### Caliper
+Caliper
+========
 
 The library [caliper](https://github.com/LLNL/Caliper) can be used to profile the execution of the code. The version 2.9.1 was tested and is supported, version 2.8.0 has also been tested and is still expected to work. Please note that one must build caliper and decomp2d against the same C/C++/Fortran compilers and MPI libray. For build instructions, please check [here](https://github.com/LLNL/Caliper#building-and-installing) and [here](https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install). Below is a suggestion for the compilation of the library using the GNU compilers:
 

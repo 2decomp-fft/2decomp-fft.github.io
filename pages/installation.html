@@ -34,8 +34,11 @@
             
   <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p># Bulding and installing 2decomp-fft</p>
-<p>## Building</p>
+<div class="section" id="bulding-and-installing-2decomp-fft">
+<h2>Bulding and installing 2decomp-fft<a class="headerlink" href="#bulding-and-installing-2decomp-fft" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
 <p>The build system is driven by <cite>cmake</cite>. It is good practice to directly point to the MPI Fortran wrapper that you would like to use to guarantee consistency between Fortran compiler and MPI. This can be done by setting the default Fortran environmental variable
 <code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">export</span> <span class="pre">FC=my_mpif90</span>
@@ -79,7 +82,9 @@ This might be useful for a centralised install supporting multiple users that is
 <code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">$path_to_build_directory</span> <span class="pre">--target</span> <span class="pre">clean</span>
 <span class="pre">`</span></code></p>
-<p>## GPU compilation</p>
+</div>
+<div class="section" id="gpu-compilation">
+<h2>GPU compilation<a class="headerlink" href="#gpu-compilation" title="Permalink to this headline">¶</a></h2>
 <p>The library can perform multi GPU offoloading using the NVHPC compiler suite for NVIDIA hardware.
 The implementation is based on CUDA-aware MPI and NVIDIA Collective Communication Library (NCCL).
 The FFT is based on cuFFT.</p>
@@ -108,8 +113,12 @@ It is possible that your default C compiler is too recent and not supported by <
 </ul>
 <p>At the moment the supported CUDA host compilers are <cite>gcc11</cite> and earlier.</p>
 </div></blockquote>
-<p>## Linking from external codes</p>
-<p>### Codes using Makefiles</p>
+</div>
+<div class="section" id="linking-from-external-codes">
+<h2>Linking from external codes<a class="headerlink" href="#linking-from-external-codes" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="codes-using-makefiles">
+<h2>Codes using Makefiles<a class="headerlink" href="#codes-using-makefiles" title="Permalink to this headline">¶</a></h2>
 <p>When building a code that links 2decomp-fft using a Makefile you will need to add the include and link paths as appropriate (<cite>inlude/</cite> and <cite>lib/</cite> under the installation directory, respectively).
 <a href="#id1"><span class="problematic" id="id2">``</span></a>`
 DECOMP_ROOT = /path/to/2decomp-fft
@@ -162,7 +171,9 @@ clean-decomp:</p>
 rm -f $(DECOMP_INSTALL_DIR)/lib/libdecomp.a</p>
 </div></blockquote>
 <p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
-<p>## Profiling</p>
+</div>
+<div class="section" id="profiling">
+<h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h2>
 <p>Profiling can be activated via <cite>cmake</cite> configuration, the recommended approach is to run the initial configuration as follows:
 <code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">export</span> <span class="pre">caliper_DIR=/path/to/caliper/install/share/cmake/caliper</span>
@@ -171,8 +182,12 @@ rm -f $(DECOMP_INSTALL_DIR)/lib/libdecomp.a</p>
 <span class="pre">`</span></code>
 where <cite>ENABLE_PROFILER</cite> is set to the profiling tool desired, currently supported values are: <cite>caliper</cite>.
 Note that when using <cite>caliper</cite> a C++ compiler is required as indicated in the above command line.</p>
-<p>## Miscellaneous</p>
-<p>### List of preprocessor variables</p>
+</div>
+<div class="section" id="miscellaneous">
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="list-of-preprocessor-variables">
+<h2>List of preprocessor variables<a class="headerlink" href="#list-of-preprocessor-variables" title="Permalink to this headline">¶</a></h2>
 <p>#### DEBUG</p>
 <p>This variable is automatically added in debug and dev builds. Extra information is printed when it is present.</p>
 <p>#### DOUBLE_PREC</p>
@@ -213,7 +228,9 @@ Please note that the resulting build is not compatible with CMake (<a class="ref
 <span class="pre">`</span></code>
 or modify the build configuration using <cite>ccmake</cite>.</p>
 <p>Note the legacy <cite>fftw</cite> interface lacks interface definitions and will fail when stricter compilation flags are used (e.g. when <cite>-DCMAKE_BUILD_TYPE=Dev</cite>) for this it is recommended to use <cite>fftw_f03</cite> which provides proper interfaces.</p>
-<p>### Caliper</p>
+</div>
+<div class="section" id="caliper">
+<h2>Caliper<a class="headerlink" href="#caliper" title="Permalink to this headline">¶</a></h2>
 <p>The library [caliper](<a class="reference external" href="https://github.com/LLNL/Caliper">https://github.com/LLNL/Caliper</a>) can be used to profile the execution of the code. The version 2.9.1 was tested and is supported, version 2.8.0 has also been tested and is still expected to work. Please note that one must build caliper and decomp2d against the same C/C++/Fortran compilers and MPI libray. For build instructions, please check [here](<a class="reference external" href="https://github.com/LLNL/Caliper#building-and-installing">https://github.com/LLNL/Caliper#building-and-installing</a>) and [here](<a class="reference external" href="https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install">https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install</a>). Below is a suggestion for the compilation of the library using the GNU compilers:</p>
 <p><code class="docutils literal notranslate"><span class="pre">`</span>
 <span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/LLNL/Caliper.git</span> <span class="pre">caliper_github</span>
@@ -231,6 +248,7 @@ Following this the <cite>2decomp-fft</cite> build can be configured to use Calip
 <span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">.</span> <span class="pre">-B</span> <span class="pre">-DENABLE_PROFILER=caliper</span>
 <span class="pre">`</span></code>
 or by modifying the configuration to set <cite>ENABLE_PROFILER=caliper</cite> via <cite>ccmake</cite>.</p>
+</div>
 </div>
 
 
@@ -252,7 +270,18 @@ or by modifying the configuration to set <cite>ENABLE_PROFILER=caliper</cite> vi
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#bulding-and-installing-2decomp-fft">Bulding and installing 2decomp-fft</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building">Building</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gpu-compilation">GPU compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linking-from-external-codes">Linking from external codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#codes-using-makefiles">Codes using Makefiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#profiling">Profiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#list-of-preprocessor-variables">List of preprocessor variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caliper">Caliper</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="domaindecomposition.html">Domain Decomposition Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>
