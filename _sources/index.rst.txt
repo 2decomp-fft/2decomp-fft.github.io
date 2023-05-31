@@ -44,7 +44,7 @@ N. Li and S. Laizet, "2DECOMP&FFT – A highly scalable 2D decomposition library
 **a new paper is in preparation to introduce the new capabilities of the library**
 
 **Acknowledgements**
-===============
+====================
 The library was initially designed thanks to several projects funded under the HECToR Distributed Computational Science and Engineering (CSE) Service operated by NAG Ltd. The new library has been designed thanks to the support of EPSRC via the `CCP Turbulence <https://www.ukturbulence.co.uk/ccp-turbulence.html>`_ (EP/T026170/1).
 
 .. toctree::
@@ -53,3 +53,6 @@ The library was initially designed thanks to several projects funded under the H
 
    pages/installation.rst
    pages/domaindecomposition.rst
+   pages/fft.rst
+   pages/api.rst
+   pages/benchmarks.rst
