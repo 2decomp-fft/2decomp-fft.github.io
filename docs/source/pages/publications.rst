@@ -5,6 +5,110 @@ Publications
 Below is a list of publications based on or mentioning the 2DECOMP&FFT library
 ================================================================
 
+-Zarins, J., Weiland, M., Bartholomew, P., Lapworth, L., & Parsons, M. (2023, January). Detecting Scale-Induced Overflow Bugs in Production HPC Codes. In High Performance Computing. ISC High Performance 2022 International Workshops: Hamburg, Germany, May 29–June 2, 2022, Revised Selected Papers (pp. 33-43). Cham: Springer International Publishing.
+
+-Liu, Z., Wang, Q., Lv, X., Liu, X., Meng, H., Zhu, G., ... & Yang, G. (2023). swPHoToNs: Toward trillion‐body‐scale cosmological N‐body simulations on Sunway TaihuLight supercomputer. Engineering Reports, e12640.
+
+-Crialesi-Esposito, M., Scapin, N., Demou, A. D., Rosti, M. E., Costa, P., Spiga, F., & Brandt, L. (2023). FluTAS: A GPU-accelerated finite difference code for multiphase flows. Computer Physics Communications, 284, 108602.
+
+-Sarath, K. P., & Manu, K. V. (2023). The onset of turbulence in decelerating diverging channel flows. Journal of Fluid Mechanics, 962, A30.
+
+-Abregu, W. I. M., Dari, E. A., & Teruel, F. E. (2023). DNS of heat transfer in a plane channel flow with spatial transition. International Journal of Heat and Mass Transfer, 209, 124110.
+
+-Kim, K. H., Kang, J. H., Pan, X., & Choi, J. I. (2023). PaScaL_TCS: A versatile solver for large-scale turbulent convective heat transfer problems with temperature-dependent fluid properties. Computer Physics Communications, 108779.
+
+-Romero, J., Costa, P., & Fatica, M. (2022, June). Distributed-memory simulations of turbulent flows on modern GPU systems using an adaptive pencil decomposition library. In Proceedings of the Platform for Advanced Scientific Computing Conference (pp. 1-11).
+
+-Ayala, A., Tomov, S., Stoyanov, M., Haidar, A., & Dongarra, J. (2022, May). Performance Analysis of Parallel FFT on Large Multi-GPU Systems. In 2022 IEEE International Parallel and Distributed Processing Symposium Workshops (IPDPSW) (pp. 372-381). IEEE.
+
+-Serafini, F., Battista, F., Gualtieri, P., & Casciola, C. M. (2022). Drag Reduction in Polymer-Laden Turbulent Pipe Flow. Fluids, 7(11), 355.
+
+-Mathias, M. S., & de Medeiros, M. A. F. (2022). Optimal computational parameters for maximum accuracy and minimum cost of Arnoldi-based time-stepping methods for flow global stability analysis. Theoretical and Computational Fluid Dynamics, 1-24.
+
+-Kwon, O. K., Kang, J. H., Lee, S., Kim, W., & Song, J. (2022, October). Efficient Task-Mapping of Parallel Applications Using a Space-Filling Curve. In Proceedings of the International Conference on Parallel Architectures and Compilation Techniques (pp. 384-397).
+
+-Villodi, N., & KV, M. (2022). Characteristics of boundary-layer transition driven by diverse streamwise vortices. Physics of Fluids, 34(7), 074113.
+
+-Karzhaubayev, K., Wang, L. P., & Zhakebayev, D. (2022). An efficient parallel spectral code for 3D periodic flow simulations. SoftwareX, 20, 101244.
+
+-Khorasani, S. M. H., Lācis, U., Pasche, S., Rosti, M. E., & Bagheri, S. (2022). Near-wall turbulence alteration with the transpiration-resistance model. Journal of Fluid Mechanics, 942, A45.
+
+-Zhao, W. L., Wang, W., & Wang, Q. (2022). Optimization of cosmological N-body simulation with FMM-PM on SIMT accelerators. The Journal of Supercomputing, 78(5), 7186-7205.
+
+-Wilbert, M., Giesecke, A., & Grauer, R. (2022). Numerical investigation of the flow inside a precession-driven cylindrical cavity with additional baffles using an immersed boundary method. Physics of Fluids, 34(9), 096607.
+
+-Poblador-Ibanez, J., & Sirignano, W. A. (2022). Temporal atomization of a transcritical liquid n-decane jet into oxygen. International Journal of Multiphase Flow, 153, 104130.
+
+-Bazesefidpar, K., Brandt, L., & Tammisola, O. (2022). A dual resolution phase‐field solver for wetting of viscoelastic droplets. International Journal for Numerical Methods in Fluids, 94(9), 1517-1541.
+
+-Dalla Barba, F., Zaccariotto, M., Galvanetto, U., & Picano, F. (2022). 3D fluid–structure interaction with fracturing: A new method with applications. Computer Methods in Applied Mechanics and Engineering, 398, 115210.
+
+-Poblador-Ibanez, J., & Sirignano, W. A. (2022). A volume-of-fluid method for variable-density, two-phase flows at supercritical pressure. Physics of Fluids, 34(5), 053321.
+
+-Lin, F., Wan, Z. H., Zhu, Y., Liu, N., Lu, X. Y., & Khomami, B. (2022). High-fidelity robust and efficient finite difference algorithm for simulation of polymer-induced turbulence in cylindrical coordinates. Journal of Non-Newtonian Fluid Mechanics, 307, 104875.
+
+-Gong, Z., Deng, G., An, C., Wu, Z., & Fu, X. (2022). A high order finite difference solver for simulations of turbidity currents with high parallel efficiency. Computers & Mathematics with Applications, 128, 21-33.
+
+-Suter, I., Grylls, T., Sützl, B. S., Owens, S. O., Wilson, C. E., & van Reeuwijk, M. (2022). uDALES 1.0: a large-eddy simulation model for urban environments. Geoscientific Model Development, 15(13), 5309-5335.
+
+-Leu, B., Aseeri, S., & Muite, B. (2021, January). A Comparison of Parallel Profiling Tools for Programs utilizing the FFT. In The International Conference on High Performance Computing in Asia-Pacific Region Companion (pp. 36-45).
+
+-Himeno, F. H., Mathias, M., & Medeiros, M. (2021). DNS of a Tollmien-Schlichting Wave Interacting with a Roughness Modeled via Body-fitted and Approximation Methods. In AIAA AVIATION 2021 FORUM (p. 2500).
+
+-Mathias, M., & Medeiros, M. (2021). Spatial instability of boundary layers over small cavities and comparison to global modes. In AIAA AVIATION 2021 FORUM (p. 2931).
+
+-Pekurovsky, D. (2021, August). A Portable Framework for Multudimensional Spectral-like Transforms At Scale. In Proceedings of the 2021 Improving Scientific Software Conference.
+
+-Miquel, B. (2021). Coral: a parallel spectral solver for fluid dynamics and partial differential equations. Journal of Open Source Software, 6(65), 2978.
+
+-Abdelsamie, A., Chi, C., Nanjaiah, M., Skenderović, I., Suleiman, S., & Thévenin, D. (2021). Direct numerical simulation of turbulent spray combustion in the SpraySyn burner: impact of injector geometry. Flow, Turbulence and Combustion, 106, 453-469.
+
+-Xie, J., He, J., Bao, Y., & Chen, X. (2021). A low-communication-overhead parallel DNS method for the 3D incompressible wall turbulence. International Journal of Computational Fluid Dynamics, 35(6), 413-432.
+
+-Gong, Z., & Fu, X. (2021). A pencil distributed direct numerical simulation solver with versatile treatments for viscous term. Computers & Mathematics with Applications, 100, 141-151.
+
+-Mathias, M. S., & Medeiros, M. A. (2021). The effect of incoming boundary layer thickness and Mach number on linear and nonlinear Rossiter modes in open cavity flows. Theoretical and Computational Fluid Dynamics, 35(4), 495-513.
+
+-Dalla Barba, F., Scapin, N., Demou, A. D., Rosti, M. E., Picano, F., & Brandt, L. (2021). An interface capturing method for liquid-gas flows at low-Mach number. Computers & Fluids, 216, 104789.
+
+-Abdelsamie, A., Lartigue, G., Frouzakis, C. E., & Thevenin, D. (2021). The Taylor–Green vortex as a benchmark for high-fidelity combustion simulations using low-Mach solvers. Computers & Fluids, 223, 104935.
+
+-Hamzehloo, A., Bartholomew, P., & Laizet, S. (2021). Direct numerical simulations of incompressible Rayleigh–Taylor instabilities at low and medium Atwood numbers. Physics of Fluids, 33(5), 054114.
+
+-Chi, C., Janiga, G., & Thévenin, D. (2021). On-the-fly artificial neural network for chemical kinetics in direct numerical simulations of premixed combustion. Combustion and Flame, 226, 467-477.
+
+-Mathias, M., & Medeiros, M. (2020). Interaction between Rossiter and Görtler modes in the compressible flow in an open cavity. In AIAA AVIATION 2020 FORUM (p. 3074).
+
+-Foster, I. (2020). Batched 3D-distributed FFT kernels towards practical DNS codes. Parallel Computing: Technology Trends, 36, 169.
+
+-Hasbestan, J. J., Xiao, C. N., & Senocak, I. (2020). PittPack: An open-source Poisson’s equation solver for extreme-scale computing with accelerators. Computer Physics Communications, 254, 107272.
+
+-Guo, W., Shams, A., Sato, Y., & Niceno, B. (2020). Influence of buoyancy in a mixed convection liquid metal flow for a horizontal channel configuration. International Journal of Heat and Fluid Flow, 85, 108630.
+
+-Wang, H., & Chandramowlishwaran, A. (2020, November). Pencil: A pipelined algorithm for distributed stencils. In SC20: International Conference for High Performance Computing, Networking, Storage and Analysis (pp. 1-16). IEEE.
+
+-Margairaz, F., Pardyjak, E. R., & Calaf, M. (2020). Surface thermal heterogeneities and the atmospheric boundary layer: the thermal heterogeneity parameter. Boundary-Layer Meteorology, 177, 49-68.
+
+-Chi, C., Abdelsamie, A., & Thévenin, D. (2020). A directional ghost-cell immersed boundary method for incompressible flows. Journal of Computational Physics, 404, 109122.
+
+-Bartholomew, P., Deskos, G., Frantz, R. A., Schuch, F. N., Lamballais, E., & Laizet, S. (2020). Xcompact3D: An open-source framework for solving turbulence problems on a Cartesian mesh. SoftwareX, 12, 100550.
+
+-Yao, J., & Hussain, F. (2020). A physical model of turbulence cascade via vortex reconnection sequence and avalanche. Journal of Fluid Mechanics, 883, A51.
+
+-Cloutier, B., Muite, B. K., & Parsani, M. (2019). Fully implicit time stepping can be efficient on parallel computers. Supercomputing Frontiers and Innovations, 6(2), 75-85.
+
+-Aseeri, S., Muite, B. K., & Takahashi, D. (2019, March). Reproducibility in benchmarking parallel fast Fourier transform based applications. In Companion of the 2019 ACM/SPEC International Conference on Performance Engineering (pp. 5-8).
+
+-Jocksch, A., Kraushaar, M., & Daverio, D. (2019). Optimized all‐to‐all communication on multicore architectures applied to FFTs with pencil decomposition. Concurrency and Computation: Practice and Experience, 31(16), e4964.
+
+-Mathias, M., & Medeiros, M. F. (2019). Global instability analysis of a boundary layer flow over a small cavity. In AIAA Aviation 2019 Forum (p. 3535).
+
+-Bauweraerts, P., & Meyers, J. (2019). On the feasibility of using large-eddy simulations for real-time turbulent-flow forecasting in the atmospheric boundary layer. Boundary-Layer Meteorology, 171, 213-235.
+
+-de Motta, J. B., Costa, P., Derksen, J. J., Peng, C., Wang, L. P., Breugem, W. P., ... & Renon, N. (2019). Assessment of numerical methods for fully resolved simulations of particle-laden turbulent flows. Computers & Fluids, 179, 1-14.
+
+-Dalcin, L., Mortensen, M., & Keyes, D. E. (2019). Fast parallel multidimensional FFT using advanced MPI. Journal of Parallel and Distributed Computing, 128, 137-150.
+
 -Doukkali, H., Abide, S., Lhassane Lahlaouti, M., & Khamlichi, A. (2018). Large Eddy Simulation of turbulent natural convection in an inclined tall cavity. Numerical Heat Transfer, Part A: Applications, 74(4), 1175-1189.
 
 -Khokhriakov, S., Manumachu, R. R., & Lastovetsky, A. (2018, December). Performance optimization of multithreaded 2d FFT on multicore processors: Challenges and solution approaches. In 2018 IEEE 25th International Conference on High Performance Computing Workshops (HiPCW) (pp. 8-17). IEEE.
