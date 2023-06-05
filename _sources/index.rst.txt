@@ -57,3 +57,4 @@ The library was initially designed thanks to several projects funded under the H
    pages/api.rst
    pages/benchmarks.rst
    pages/publications.rst
+   pages/contributing.rst

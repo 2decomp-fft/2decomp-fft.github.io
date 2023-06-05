@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Parallel I/O &#8212; 2decomp_doc  documentation</title>
+    <title>Fast Fourier Transforms &#8212; 2decomp_doc  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -15,8 +15,8 @@
     <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Publications" href="publications.html" />
-    <link rel="prev" title="Halo-cell Support" href="api_halo.html" />
+    <link rel="next" title="API" href="api.html" />
+    <link rel="prev" title="Domain Decomposition Strategies" href="domaindecomposition.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -33,8 +33,11 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="parallel-i-o">
-<h1>Parallel I/O<a class="headerlink" href="#parallel-i-o" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="fast-fourier-transforms">
+<h1>Fast Fourier Transforms<a class="headerlink" href="#fast-fourier-transforms" title="Permalink to this headline">¶</a></h1>
+<p>The Discrete Fourier Transform (DFT) plays an important role in many scientific and technical applications, including time-series and waveform analysis, solutions to linear partial
+differential equations, convolution, digital signal processing, and image filtering. Many algorithms have been proposed to compute DFTs with a good efficiency and the most famous clas of efficient algorithms is generally referred to as fast Fourier transform (FFT) algorithms.</p>
+<p>The 2Decomp&amp;FFT is providing an API to perform FFTs at scale using a 2D Domain Decomposition on CPUs and on GPUs. There are hundreds of FFT software packages available but only few of them suitable for multi-GPUs.</p>
 </div>
 
 
@@ -58,14 +61,8 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="domaindecomposition.html">Domain Decomposition Strategies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="api.html">API</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="api_domain.html">2D Pencil Decomposition API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_fft.html">API for Three-dimensional FFTs</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_halo.html">Halo-cell Support</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Parallel I/O</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Fast Fourier Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 </ul>
@@ -74,10 +71,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="api.html">API</a><ul>
-      <li>Previous: <a href="api_halo.html" title="previous chapter">Halo-cell Support</a></li>
-      <li>Next: <a href="publications.html" title="next chapter">Publications</a></li>
-  </ul></li>
+      <li>Previous: <a href="domaindecomposition.html" title="previous chapter">Domain Decomposition Strategies</a></li>
+      <li>Next: <a href="api.html" title="next chapter">API</a></li>
   </ul></li>
 </ul>
 </div>
@@ -111,7 +106,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="../_sources/pages/api_io.rst.txt"
+      <a href="../_sources/pages/fft.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
