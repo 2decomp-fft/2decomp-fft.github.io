@@ -35,6 +35,38 @@
             
   <div class="section" id="halo-cell-support">
 <h1>Halo-cell Support<a class="headerlink" href="#halo-cell-support" title="Permalink to this headline">¶</a></h1>
+<p>While most of the communications using the 2D decomposition are via the global transposition calls, it may become necessary for neighbouring blocks to exchange data explicitly. One such scenario is in CFD applications performing large-eddy simulations (LES). While most spatial derivatives are computed using the implicit formulation to achieve a high order of accuracy, some derivatives may be evaluated quickly using local stencils and explicit formulae, such as those used by sub-grid scale models (a model by definition does not require higher-order of accuracy).</p>
+<p>The halo-cell support API provides data structures and nearest-neighbour communication routines that support explicit message passing between neighbouring pencils. As with the rest of the 2DECOMP&amp;FFT library, the API is designed to be very user-friendly:</p>
+<p><code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">update_halo(var,</span> <span class="pre">var_halo,</span> <span class="pre">level)</span></code></p>
+<p>Here the first parameter var, a 3D input array, contains the normal pencil-distributed data as defined by the decomposition library. After the subroutine call, the second parameter var_halo, an output, returns all original data plus halo data from the neighbouring processes. One can imagine that the pencils are now fatter and overlap with the neighbouring pencils. The third parameter level defines how many layers of overlapping is required. var_halo should be defined from the calling routine as either a 3D allocatable array or pointer. Its memory space will be calculated and allocated by the library and when the subroutine returns it can be indexed by the calling program using the normal i,j,k indices.</p>
+<p>As with the rest of the 2DECOMP&amp;FFT library, a more general form of the routine is available (implemented using Fortran optional parameters):</p>
+<p><code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">update_halo(var,</span> <span class="pre">var_halo,</span> <span class="pre">level,</span> <span class="pre">opt_decomp,</span> <span class="pre">opt_global)</span></code></p>
+<p>This supports halo-cell communications among pencils with arbitrary global sizes, as described by <cite>opt_decomp</cite>, the decomposition object. The last optional parameter <cite>opt_global</cite> is required (to be set to .true.) if global coordinate is used to define the pencils, i.e. the input array var is defined using the start/end variables rather than size variables. This ensures the coordinate systems used by <cite>var</cite> and <cite>var_halo</cite> are consistent.</p>
+<p>To demonstrate the use of this API, here is an example that computes spatial derivatives:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>! to calculate dv/dy, assume that variables are stored in X-pencil
+
+real, allocatable, dimension(:,:,:) :: v, v_halo, dvdy
+
+allocate(v(xsize(1), xsize(2), xsize(3)))
+allocate(dvdy(xsize(1), xsize(2), xsize(3)))
+
+call update_halo(v,v_halo,level=1)
+
+! compute derivatives
+do k=1,xsize(3)
+   do j=1,xsize(2)
+      do i=1,xsize(1)
+         dvdy(i,j,k) = (v_halo(i,j+1,k)-v_halo(i,j-1,k)) / dy
+      end do
+   end do
+end do
+</pre></div>
+</div>
+<p>As seen, the variables are stored in X-pencil and derivatives are to be evaluated over distributed data along Y direction using central difference. This is the perfect situation to use the halo-cell support API. Using global transpositions would be unnecessarily too expensive for this type of explicit calculations. After the call to <cite>update_halo</cite>, it is safe to refer to the j+1 and j-1 indices on array <cite>v_halo</cite> in order to compute the derivatives.</p>
+<p>Please note that for the pencils bordering the computational domain, it is up to the application to handle the physical boundary conditions. The library does support periodic condition, i.e. for processes near the boundary of the computational domain, a call to the update_halo routine will fill the halo cells of one side with values from the other side of the domain, when periodic condition is required. To specify periodic condition, one need to initialise the decomposition library with additional information:</p>
+<p><code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">decomp_2d_init(nx,</span> <span class="pre">ny,</span> <span class="pre">nz,</span> <span class="pre">P_row,</span> <span class="pre">P_col,</span> <span class="pre">periodic_bc)</span></code></p>
+<p>The extra parameter periodic_bc is a 1D array containing 3 logical values that specify which dimension should be periodic. This parameter is <em>optional</em> and should only be used with the halo-cell API. The domain decomposition should otherwise behaves exactly as normal.</p>
+<p>Like the rest of 2DECOMP&amp;FFT, the halo-cell support API is implemented in a black-box fashion. The library internally handles the communications between neighbouring blocks using standard MPI non-blocking point-to-point communications.</p>
 </div>
 
 
