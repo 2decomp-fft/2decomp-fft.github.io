@@ -138,9 +138,10 @@ using the following call
 
  call decomp_2d_init(nx, ny, nz, p_row, p_col)
 
-where nx, ny and nz are the size of 3D global data to be distributed over a 2D processor grid p_row*p_col. 
-Note that none of the dimensions need to be divisible by p_row or p_col, i.e. the library can handle non-evenly distributed data.
-In case of p_row=p_col=0 an automatic decomposition is selected among all possible combination available. 
+where ``nx``, ``ny`` and ``nz`` are the size of 3D global data to be distributed over 
+a 2D processor grid :math:`p_row \times p_col`. 
+Note that none of the dimensions need to be divisible by ``p_row`` or ``p_col``, i.e. the library can handle non-evenly distributed data.
+In case of ``p_row=p_col=0`` an automatic decomposition is selected among all possible combination available. 
 The algorithm will choose the closest combination such as 
 
 .. math::
