@@ -130,6 +130,7 @@ The allocation for a x pencil decomposition would be equivalent to the statement
 Allocated arrays can be simply released with an ``deallocate(var)`` statement. 
 
 **Basic 2D Decomposition API**
+
 All the global variables described above, the defualt common type ``decomp`` and the MPI initialization is done 
 using the following call
 
@@ -192,6 +193,7 @@ Finally, before exit, applications should clean up the memory by:
   call decomp_2d_finalize
 
 **Advanced 2D Decomposition API**
+
 While the basic decomposition API is very user-friendly, there may be situations in which 
 applications need to handle more complex data structures. There are quite a few examples:
 
@@ -243,6 +245,5 @@ Finally the defined type needs also to be nullified using:
 
   call decomp_info_finalize(new_decomp)
 
-This object then can be passed to the communication routines defined in the basic interface as a third parameter. For example:
 
 
