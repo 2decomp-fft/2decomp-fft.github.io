@@ -13,6 +13,7 @@
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="API for Three-dimensional FFTs" href="api_fft.html" />
@@ -36,21 +37,185 @@
   <div class="section" id="d-pencil-decomposition-api">
 <h1>2D Pencil Decomposition API<a class="headerlink" href="#d-pencil-decomposition-api" title="Permalink to this headline">¶</a></h1>
 <p>This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. The library interface is designed to be very simple. One can refer to the sample applications for a quick start.</p>
-<p>The 2D Pencil Decomposition API is defined in one Fortran module which should be used by applications:</p>
-<blockquote>
-<div><p><code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d</span></code></p>
-</div></blockquote>
-<p><strong>Global Variables</strong></p>
-<p>Following is the list of global variables defined by the library that can be used in applications. Obviously these names should not be redefined in applications to avoid conflict. Also note that some variables contain duplicate or redundant information just to simplify the programming.</p>
+<p>The 2D Pencil Decomposition API is defined in three Fortran module which should be used by applications as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use</span> <span class="n">decomp_2d_constants</span>
+<span class="n">use</span> <span class="n">decomp_2d_mpi</span>
+<span class="n">use</span> <span class="n">decomp_2d</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d_constants</span></code> defines all the parameters, <code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d_mpi</span></code> introduces all the MPI
+related interfaces and <code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d</span></code> cointains the main decomposition and transposition APIs.</p>
+<p><strong>Module decomp_2d_constant: Global Variables</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d_constants</span></code> cointains global parameters that used to define the KIND of floating
+point data (e.g. single or double precision).
+These are used to consistently define the precision of the data type for the viariables
+and for MPI operations.</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">mytype</span></code> - Use this variable to define the KIND of floating-point data, e.g. real(mytype) :: var or complex(mytype) :: cvar. This makes it easy to switch between single precision and double precision (more details).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">real_type,</span> <span class="pre">complex_type</span></code> - These are the proper MPI datatypes to be used (for real and complex numbers, respectively) if applications need to call MPI library routines directly.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nx_global,</span> <span class="pre">ny_global,</span> <span class="pre">nz_global</span></code> - size of the global data.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nproc</span></code> - the total number of MPI processes.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nrank</span></code> - the rank of the current MPI process.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">xsize(i),</span> <span class="pre">ysize(i),</span> <span class="pre">zsize(i),</span> <span class="pre">i=1,2,3</span></code> - sizes of the sub-domains held by the current process. The first letter refers to the pencil orientation and the three 1D array elements contain the sub-domain sizes in X, Y and Z directions, respectively. In a 2D pencil decomposition, there is always one dimension which completely resides in local memory. So by definition xsize(1)==nx_global, ysize(2)==ny_global and zsize(3)==nz_global.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">xstart(i),</span> <span class="pre">ystart(i),</span> <span class="pre">zstart(i),</span> <span class="pre">xend(i),</span> <span class="pre">yend(i),</span> <span class="pre">zend(i),</span> <span class="pre">i=1,2,3</span></code> - the starting and ending indices for each sub-domain, as in the global coordinate system. Obviously, it can be seen that xsize(i)=xend(i)-xstart(i)+1. It may be convenient for certain applications to use global coordinate (for example when extracting a 2D plane from a 3D domain, it is easier to know which process owns the plane if global index is used).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mytype</span></code> - Use this variable to define the KIND of floating-point data,
+e.g. <code class="docutils literal notranslate"><span class="pre">real(mytype)</span> <span class="pre">::</span> <span class="pre">var</span></code> or <code class="docutils literal notranslate"><span class="pre">complex(mytype)</span> <span class="pre">::</span> <span class="pre">cvar</span></code>.
+Depending on configuring options this type will point to single or double.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">real_type,</span> <span class="pre">complex_type</span></code> - These are the proper MPI datatypes to be used
+(for real and complex numbers, respectively) if applications need to call MPI library routines directly.
+These types will point to single of double depending on the configuring options.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">real2_type</span></code> - This type double the precision of the baseline <code class="docutils literal notranslate"><span class="pre">real_type</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mytype_single,</span> <span class="pre">real_type_single</span></code> - These two types are used to define the data type fpr the IO operations.</p></li>
 </ul>
+<p>The module contains additional parameters to control :</p>
+<ul class="simple">
+<li><p>the log on output,</p></li>
+<li><p>the log on debug,</p></li>
+<li><p>activate the degugger (caliper)</p></li>
+<li><p>activate the different FFT backends (generic, FFTW, MKL, cuFFT)</p></li>
+<li><p>define the release major and minor version</p></li>
+</ul>
+<p><strong>Module decomp_2d_mpi: MPI communication</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d_mpi</span></code> cointains global parameters that are used for MPI operation:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nproc</span></code> - the total number of MPI processes. [INT].</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrank</span></code> - the rank of the current MPI process. [INT].</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decomp_2d_comm</span></code> - global MPI communicator [INT].</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decomp_2d_about</span></code> - interface to display error message and call MPI_ABORT function.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decomp_2d_warning</span></code> - interface to display error message together with line number and function.</p></li>
+</ul>
+<p><strong>Module decomp_2d: decompostion module</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d</span></code> cointains the variables and the routines to perform the global transpostion operations.
+The important variables are</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nx_global,</span> <span class="pre">ny_global,</span> <span class="pre">nz_global</span></code> - size of the global data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xsize(i),</span> <span class="pre">ysize(i),</span> <span class="pre">zsize(i),</span> <span class="pre">i=1,2,3</span></code> - sizes of the sub-domains held by the current process.
+The first letter refers to the pencil orientation and the three 1D array elements contain
+the sub-domain sizes in X, Y and Z directions, respectively.
+In a 2D pencil decomposition, there is always one dimension which completely resides in local memory.
+So by definition <code class="docutils literal notranslate"><span class="pre">xsize(1)==nx_global</span></code>, <code class="docutils literal notranslate"><span class="pre">ysize(2)==ny_global</span></code> and <code class="docutils literal notranslate"><span class="pre">zsize(3)==nz_global</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xstart(i),</span> <span class="pre">ystart(i),</span> <span class="pre">zstart(i),</span> <span class="pre">xend(i),</span> <span class="pre">yend(i),</span> <span class="pre">zend(i),</span> <span class="pre">i=1,2,3</span></code> - the starting and ending indices
+for each sub-domain, as in the global coordinate system.
+Obviously, it can be seen that <code class="docutils literal notranslate"><span class="pre">xsize(i)=xend(i)-xstart(i)+1</span></code>.
+It may be convenient for certain applications to use global coordinate
+(for example when extracting a 2D plane from a 3D domain,
+it is easier to know which process owns the plane if global index is used).</p></li>
+</ul>
+<p>Decomposition informations are also available using the data type <code class="docutils literal notranslate"><span class="pre">DECOMP_INFO</span></code> which provides the
+following derived types:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">xst(i),</span> <span class="pre">yst(i),</span> <span class="pre">zst(i),</span> <span class="pre">i=1,2,3</span></code> - the starting indices for each sub-domain, as in the global coordinate system.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xen(i),</span> <span class="pre">yen(i),</span> <span class="pre">zen(i),</span> <span class="pre">i=1,2,3</span></code> - the end indices for each sub-domain, as in the global coordinate system.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xsz(i),</span> <span class="pre">ysz(i),</span> <span class="pre">zsz(i),</span> <span class="pre">i=1,2,3</span></code> - the size for each sub-domain, as in the global coordinate system.</p></li>
+</ul>
+<p>Arrays can also be stored on smaller mesh sizes where points are skipped:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iskipS,</span> <span class="pre">jskipS,</span> <span class="pre">kskipS</span></code> - points skipped in the x, y and z direction for a generic scalar field</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iskipV,</span> <span class="pre">jskipV,</span> <span class="pre">kskipV</span></code> - points skipped in the x, y and z direction for the velocity field</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iskipP,</span> <span class="pre">jskipP,</span> <span class="pre">kskipP</span></code> - points skipped in the x, y and z direction for the pressure field</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xszS,</span> <span class="pre">yszS,</span> <span class="pre">zszS,</span> <span class="pre">xstS,</span> <span class="pre">ystS,</span> <span class="pre">zstS,</span> <span class="pre">xenS,</span> <span class="pre">yenS,</span> <span class="pre">zenS</span></code> - size, starting and final indexes for the
+reduce size mesh for a generic scalar</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xszV,</span> <span class="pre">yszV,</span> <span class="pre">zszV,</span> <span class="pre">xstV,</span> <span class="pre">ystV,</span> <span class="pre">zstV,</span> <span class="pre">xenV,</span> <span class="pre">yenV,</span> <span class="pre">zenV</span></code> - size, starting and final indexes for the
+reduce size mesh for the velocity field</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">xszP,</span> <span class="pre">yszP,</span> <span class="pre">zszP,</span> <span class="pre">xstP,</span> <span class="pre">ystP,</span> <span class="pre">zstP,</span> <span class="pre">xenP,</span> <span class="pre">yenP,</span> <span class="pre">zenP</span></code> - size, starting and final indexes for the
+reduce size mesh for the pressure field</p></li>
+</ul>
+<p>The module provides memory allocations API that are recomended to correctly define its major data structures
+within the main program. It is recomended that all major arrays are defined as <code class="docutils literal notranslate"><span class="pre">allocable</span></code>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">alloc_x(var,</span> <span class="pre">decomp,</span> <span class="pre">global)</span></code> - allocation using a x-pencil decomposition</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alloc_y(var,</span> <span class="pre">decomp,</span> <span class="pre">global)</span></code> - allocation using a y-pencil decomposition</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">alloc_y(var,</span> <span class="pre">decomp,</span> <span class="pre">global)</span></code> - allocation using a z-pencil decomposition</p></li>
+</ul>
+<p>where <code class="docutils literal notranslate"><span class="pre">var</span></code> is the allocable array name,
+<code class="docutils literal notranslate"><span class="pre">decomp[optional]</span></code> the relative <code class="docutils literal notranslate"><span class="pre">DECOMP_INFO</span></code> data type and
+<code class="docutils literal notranslate"><span class="pre">global[optional]</span></code> is a logical [True/False] flag to indicate if the array is allocated in the global coordinate system.
+The allocation for a x pencil decomposition would be equivalent to the statement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>allocate(var(decomp%xsz(1), decomp%xsz(2), decomp%xsz(3)))   ! if global==.false.
+allocate(var(decomp%xst(1):decomp%xen(1), decomp%xst(2):decomp%xen(2), &amp;
+                  decomp%xst(3):decomp%xen(3)))               ! if global==.true.
+</pre></div>
+</div>
+<p>Allocated arrays can be simply released with an <code class="docutils literal notranslate"><span class="pre">deallocate(var)</span></code> statement.</p>
+<p><strong>Basic 2D Decomposition API</strong></p>
+<p>All the global variables described above, the defualt common type <code class="docutils literal notranslate"><span class="pre">decomp</span></code> and the MPI initialization is done
+using the following call</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">nx</span></code>, <code class="docutils literal notranslate"><span class="pre">ny</span></code> and <code class="docutils literal notranslate"><span class="pre">nz</span></code> are the size of 3D global data to be distributed over
+a 2D processor grid <span class="math notranslate nohighlight">\(p_row \times p_col\)</span>.
+Note that none of the dimensions need to be divisible by <code class="docutils literal notranslate"><span class="pre">p_row</span></code> or <code class="docutils literal notranslate"><span class="pre">p_col</span></code>, i.e. the library can handle non-evenly distributed data.
+In case of <code class="docutils literal notranslate"><span class="pre">p_row=p_col=0</span></code> an automatic decomposition is selected among all possible combination available.
+The algorithm will choose the closest combination such as</p>
+<div class="math notranslate nohighlight">
+\[n\_proc=n\_col=\sqrt{nproc}\]</div>
+<p>In case the root is not exact the closest combitation to have <span class="math notranslate nohighlight">\(n\_proc \approx n\_col\)</span> with
+<cite>n_proc &lt;  n_col</cite> is used.</p>
+<p>An optional parameter may be passed to this initialisation routine:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">,</span><span class="n">periodic_bc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here periodic_bc is a 1D array containing 3 logical values that specify whether periodic boundary condition
+should apply in certain dimensions. Note this is only applicable if halo-cell communication is to be used.</p>
+<p>A key element of this library is a set of communication routines that actually perform the data transpositions.
+As mentioned, one needs to perform 4 global transpositions to go through all 3 pencil orientations.
+Correspondingly, the library provides 4 communication subroutines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">transpose_x_to_y</span><span class="p">(</span><span class="n">var_in</span><span class="p">,</span><span class="n">var_out</span><span class="p">)</span>
+<span class="n">call</span> <span class="n">transpose_y_to_z</span><span class="p">(</span><span class="n">var_in</span><span class="p">,</span><span class="n">var_out</span><span class="p">)</span>
+<span class="n">call</span> <span class="n">transpose_z_to_y</span><span class="p">(</span><span class="n">var_in</span><span class="p">,</span><span class="n">var_out</span><span class="p">)</span>
+<span class="n">call</span> <span class="n">transpose_y_to_x</span><span class="p">(</span><span class="n">var_in</span><span class="p">,</span><span class="n">var_out</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The input array <code class="docutils literal notranslate"><span class="pre">var_in</span></code> and <code class="docutils literal notranslate"><span class="pre">var_output</span></code> array out should have been defined
+and contain distributed data for the correct pencil orientations.</p>
+<p>Note that the library is written using Fortran’s generic interface so different data types are supported
+without user intervention. That means in and out above can be either real arrays or complex arrays,
+the latter being useful for FFT-type of applications.</p>
+<p>As seen, the communication details are packed within a black box. From a user’s perspective,
+it is not necessary to understand the internal logic of these transposition routines.
+From the developer’s perspective, he has the freedom to change the implementation without breaking user codes.</p>
+<p>It is however noted that the communication routines are expensive,
+especially when running on large number of processors.
+So applications should try to minimize the number of calls to them by adjusting the algorithms in use,
+even sometimes by duplicating computations.</p>
+<p>Finally, before exit, applications should clean up the memory by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_finalize</span>
+</pre></div>
+</div>
+<p><strong>Advanced 2D Decomposition API</strong></p>
+<p>While the basic decomposition API is very user-friendly, there may be situations in which
+applications need to handle more complex data structures. There are quite a few examples:</p>
+<ul class="simple">
+<li><p>While using real-to-complex FFTs, applications need to store both the real input
+(say, of global size nx*ny*nz)
+and the corresponding complex output (of smaller global size - such as (nx/2+1)*ny*nz -
+where roughly half the output is dropped due to conjugate symmetry).</p></li>
+<li><p>Many CFD applications use a staggered mesh system which requires different storage for global quantities
+(e.g. cell-centred vs. cell-interface storage).</p></li>
+<li><p>In applications using spectral method, for anti-aliasing purpose,
+it is a common practice to enlarge the spatial domain before applying the Fourier transforms.</p></li>
+</ul>
+<p>In all these examples, there are multiple global sizes and applications need to be able to distributed
+different data sets as 2D pencils.
+<code class="docutils literal notranslate"><span class="pre">2decomp&amp;FFT</span></code> provides a powerful and flexible programming interface to handle this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TYPE</span><span class="p">(</span><span class="n">DECOMP_INFO</span><span class="p">)</span> <span class="p">::</span> <span class="n">new_decomp</span>
+<span class="n">call</span> <span class="n">decomp_info_init</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here decomp is an instance of Fortran derived data type DECOMP_INFO encapsulating
+the 2D decomposition information associated with one particular global size <span class="math notranslate nohighlight">\(n1\times n2 \times n3\)</span>.
+The decomposition object can be initialised using the <code class="docutils literal notranslate"><span class="pre">decomp_info_init</span></code> routine as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_info_init</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span><span class="n">n2</span><span class="p">,</span><span class="n">n3</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This object then can be passed to the communication routines defined in the basic interface as a third parameter.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">transpose_x_to_y</span><span class="p">(</span><span class="n">var_in</span><span class="p">,</span> <span class="n">var_out</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The input and output arrays can be allocated as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">alloc_x</span><span class="p">(</span><span class="n">var_in</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">,</span> <span class="o">.</span><span class="n">true</span><span class="o">.</span><span class="p">)</span>
+<span class="n">call</span> <span class="n">alloc_y</span><span class="p">(</span><span class="n">var_out</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">,</span> <span class="o">.</span><span class="n">true</span><span class="o">.</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally the defined type needs also to be nullified using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_info_finalize</span><span class="p">(</span><span class="n">new_decomp</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 
 
