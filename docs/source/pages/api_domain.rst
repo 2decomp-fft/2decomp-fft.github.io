@@ -15,7 +15,8 @@ The 2D Pencil Decomposition API is defined in three Fortran module which should 
 The ``use decomp_2d_constants`` defines all the parameters, ``use decomp_2d_mpi`` introduces all the MPI
 related interfaces and ``use decomp_2d`` cointains the main decomposition and transposition APIs. 
       
-**Module decomp_2d_constant: Global Variables**
+Module **decomp_2d_constant**: Global Variables
+_______________________________________________
 
 The ``decomp_2d_constants`` cointains global parameters that used to define the KIND of floating 
 point data (e.g. single or double precision). 
@@ -46,7 +47,8 @@ The module contains additional parameters to control :
 
 * define the release major and minor version
 
-**Module decomp_2d_mpi: MPI communication**
+Module **decomp_2d_mpi**: MPI communication
+___________________________________________
 
 The ``decomp_2d_mpi`` cointains global parameters that are used for MPI operation:  
  
@@ -60,7 +62,8 @@ The ``decomp_2d_mpi`` cointains global parameters that are used for MPI operatio
 
 * ``decomp_2d_warning`` - interface to display error message together with line number and function.
 
-**Module decomp_2d: decompostion module**
+Module **decomp_2d**: decompostion module
+_________________________________________
 
 The ``decomp_2d`` cointains the variables and the routines to perform the global transpostion operations. 
 The important variables are
@@ -129,7 +132,8 @@ The allocation for a x pencil decomposition would be equivalent to the statement
 
 Allocated arrays can be simply released with an ``deallocate(var)`` statement. 
 
-**Basic 2D Decomposition API**
+Basic 2D Decomposition API
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All the global variables described above, the defualt common type ``decomp`` and the MPI initialization is done 
 using the following call
@@ -193,7 +197,8 @@ Finally, before exit, applications should clean up the memory by:
 
   call decomp_2d_finalize
 
-**Advanced 2D Decomposition API**
+Advanced 2D Decomposition API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 While the basic decomposition API is very user-friendly, there may be situations in which 
 applications need to handle more complex data structures. There are quite a few examples:
