@@ -36,6 +36,92 @@
             
   <div class="section" id="api-for-three-dimensional-ffts">
 <h1>API for Three-dimensional FFTs<a class="headerlink" href="#api-for-three-dimensional-ffts" title="Permalink to this headline">¶</a></h1>
+<p>To use the FFT programming interface, first of all, one additional Fortran module has to be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use</span> <span class="n">decomp_2d_fft</span>
+</pre></div>
+</div>
+<p>The FFT interface is built on top of the 2D decomposition library, which, naturally,
+needs to be initialised first:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(nx\times ny\times nz\)</span> is the 3D domain size and <span class="math notranslate nohighlight">\(p\_row \times p\_col\)</span>
+is the 2D processor grid.
+Then one needs to initialise the FFT interface by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_init</span>
+</pre></div>
+</div>
+<p>The initialisation routine handles planing for the underlying FFT engine (if supported)
+and defines global data structures (such as temporary work spaces) for the computations.
+By default, it assumes that physical-space data is distributed in X-pencil format <code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_X</span></code>.
+The corresponding spectral-space data is stored in transposed Z-pencil format after the FFT.
+To give applications more flexibility, the library also supports the opposite direction Z-pensil,
+passing the optional parameter <code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_Z</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_init</span><span class="p">(</span><span class="n">PHYSICAL_IN_Z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Physical-space data in Y-pencil is not supported since it requires additional expensive transpositions
+which does not make economical sense.
+There is a third and the most flexible form of the initialisation routine:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_init</span><span class="p">(</span><span class="n">pencil</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">pencil=PHYSICAL_IN_X</span></code> or <code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_Z</span></code> and <code class="docutils literal notranslate"><span class="pre">n1,</span> <span class="pre">n2,</span> <span class="pre">n3</span></code> is an arbitrary problem size
+different from <span class="math notranslate nohighlight">\(nx\times ny\times nz\)</span>.
+The result of the <code class="docutils literal notranslate"><span class="pre">decomp_2d_fft_init</span></code> operation is to create two new objects of type <code class="docutils literal notranslate"><span class="pre">DECOMP_INFO</span></code>:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ph</span></code> - structure with default size <span class="math notranslate nohighlight">\(nx\times ny\times nz\)</span> or size <span class="math notranslate nohighlight">\(n1\times n2\times n3\)</span>
+in case of arbitrary defined problem</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sh</span></code> - structure for the <code class="docutils literal notranslate"><span class="pre">r2c/c2r</span></code> transform which with dimensions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_X</span></code> - <span class="math notranslate nohighlight">\(nx/2+1\times ny\times nz\)</span> (default) or <span class="math notranslate nohighlight">\(n1/2+1\times n2\times n3\)</span> (customized)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_Z</span></code> - <span class="math notranslate nohighlight">\(nx\times ny\times nz/2+1\)</span> (default) or <span class="math notranslate nohighlight">\(n1\times n2\times n3/2+1\)</span> (customized)</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Complex-to-complex Transforms</strong></p>
+<p>The library supports three-dimensional FFTs whose data is distributed as 2D pencils and stored in ordinary ijk-ordered 3D arrays across processors.
+For complex-to-complex (c2c) FFTs, the user interface is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_3d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">direction</span></code> can be either <code class="docutils literal notranslate"><span class="pre">DECOMP_2D_FFT_FORWARD</span> <span class="pre">==</span> <span class="pre">-1</span></code> for forward transforms, or <code class="docutils literal notranslate"><span class="pre">DECOMP_2D_FFT_BACKWARD</span> <span class="pre">==</span> <span class="pre">1</span></code> for backward transforms.
+The input array <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> array out are both complex and</p>
+<p>and have to be either a X-pencil/Z-pencil combination or vice versa, depending on the direction of FFT and
+how the FFT interface is initialised (<code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_X</span></code>, the default, or <code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_Z</span></code> the optional).</p>
+<p><strong>Real-to-complex &amp; Complex-to-Real Transforms</strong></p>
+<p>The interface for the the real-to-complex and complex-to-real transform is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_3d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">input</span></code> data are real type a forward transform is assumed obtaining a complex <code class="docutils literal notranslate"><span class="pre">output</span></code>.
+Similarly a backward FFT is computed if <code class="docutils literal notranslate"><span class="pre">input</span></code> is a complex array and <code class="docutils literal notranslate"><span class="pre">output</span></code> a real array.
+When real input is involved, the corresponding complex output satisfies so-called <em>Hermitian redundancy</em> -
+i.e. some output values are complex conjugates of others.
+Taking advantage of this, FFT algorithms can normally compute r2c and c2r transforms twice as fast as c2c transforms
+while only using about half of the memory.
+Unfortunately, the price to pay is that application’s data structures have to become slightly more complex.
+For a 3D real input data set of size <span class="math notranslate nohighlight">\(nx\times ny\times nz\)</span> in a X-pencil deposition,
+the complex output can be held in an array of size <span class="math notranslate nohighlight">\(nx/2+1\times ny\times nz\)</span>, with the first dimension being cut roughly in half.
+This change in size is reflected in the dimension assigned to the <code class="docutils literal notranslate"><span class="pre">sp</span></code> structure previously described
+The size of the <code class="docutils literal notranslate"><span class="pre">sp</span></code> can also be recovered using the following routine:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_get_size</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="n">size</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here all three arguments are 1D array of three elements, returning to the caller the starting index,
+ending index and size of the sub-domain held by the current processor -
+information very similar to the <code class="docutils literal notranslate"><span class="pre">start/end/size</span></code> variables defined in the main decomposition library.</p>
+<p>Please note that the complex output arrays obtained from X-pencil and Z-pencil input do not contain identical information.
+However, if <em>Hermitian redundancy</em> is taken into account, no physical information is lost and the real input can be fully recovered
+through the corresponding inverse FFT from either complex array.</p>
+<p>Please also note that <code class="docutils literal notranslate"><span class="pre">2decomp&amp;FFT</span></code> does not scale the transforms. So a forward transform followed by a backward transform
+will not recover the input unless applications normalise the result by the size of the transforms.</p>
+<p><strong>Finalisation</strong></p>
+<p>Finally, to release the memory used by the FFT interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_finalize</span>
+</pre></div>
+</div>
+<p>It is possible to re-initialise the FFT interface in the same application at the later stage after it has been finalised, if this becomes necessary.</p>
 </div>
 
 
