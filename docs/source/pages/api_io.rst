@@ -10,16 +10,23 @@ I/O functions for applications based on 3D Cartesian data structures.
 
 All the I/O functions have been packed in a Fortran module:
 
+::
+   
       use decomp_2d_io
 
 To write a single three-dimensional array to a file
+---------------------------------------------------
 
+::
+   
       call decomp_2d_write_one(ipencil,var,filename)
 
-where ipencil describes how the data is distributed (valid values are: 1 for X-pencil; 2 for
+where ``ipencil`` describes how the data is distributed (valid values are: 1 for X-pencil; 2 for
 Y-pencil and 3 for Z-pencil); var is the reference to the data array, which can be either real or
 complex; filename is the name of the file to be written. A more general form of the subroutine is:
 
+::
+   
       call decomp_2d_write_one(ipencil,var,filename, opt_decomp)
 
 where the global size of the data array is described by the decomposition object opt_decomp (as
@@ -29,9 +36,12 @@ easily post-processed (for example by a serial code). A corresponding read routi
 available.
 
 To write multiple three-dimensional variables into a file
+---------------------------------------------------------
 
 This function is very useful when creating check-point files or result files. It is in the form of:
 
+::
+   
       call decomp_2d_write_var(fh,disp,ipencil,var)
 
 where fh is a MPI-IO file handle provided by the application (file opened using MPI_FILE_OPEN);
@@ -41,6 +51,8 @@ of intent INOUT - it is like a pointer or file cursor tracking the location wher
 data would be written. It is assumed that the data array is in default size, otherwise the function
 also takes a second and more general form:
 
+::
+   
       call decomp_2d_write_var(fh,disp,ipencil,var,opt_decomp)
 
 where the decomposition object opt_decomp describes the arbitrary size of the global array.
@@ -48,6 +60,8 @@ where the decomposition object opt_decomp describes the arbitrary size of the gl
 To create a restart/checkpointing file, it is often necessary to save key scalar variables as
 well. This can be done using:
 
+::
+   
       call decomp_2d_write_scalar(fh,disp,n,var)
 
 where var is a 1D array containing n scalars of the same data type. The supported data types are:
@@ -60,7 +74,10 @@ order. One major benefit is that it becomes very easy to read the data back into
 using a different number of MPI processes.
 
 To write a 2D slice of data from a 3D variable
+----------------------------------------------
 
+::
+   
       call decomp_2d_write_plane(ipencil,var,iplane,n,filename,opt_decomp)
 
 where ipencil describes the distribution of the 3D variable var; iplane defines the direction of the
@@ -69,11 +86,14 @@ out (in global coordinate system); and filename is the name of the file to be wr
 opt_decomp is an optional parameter that can be used when var is of non-default size.
 
 To write out a 3D variable in lower resolution to a file
+--------------------------------------------------------
 
 Applications using the 2D decomposition often handle quite large data sets. It may not be practical
 to write out everything for post-processing. The following subroutine provide a convenient way to
 write only a subset of the data for analysis.
 
+::
+   
       call decomp_2d_write_every(ipencil,var,iskip,jskip,kskip,filename,from1)
 
 where once again ipencil describes the distribution of the 3D variable var and filename defines the
@@ -81,23 +101,29 @@ name of the file to be written. Every iskip-th points of the data in X-direction
 Y-direction and every kskip-th in Z-direction are to be written. Finally from1 is a boolean
 flag. Assuming every n-th data points are to be written out, the data points have indices of:
 
-    1,n+1,2n+1... if from1 is .true.
-    n,2n,3n... of from1 is .false. 
+* 1,n+1,2n+1... if from1 is ``.true.``
+* n,2n,3n... ff from1 is ``.false.``
 
 Quick I/O Reference
+-------------------
 
 The following table summarises the supported I/O types and data types of the subroutines:
-IO functions 	I/O type 	Data type 	decomp#
-  	Read 	Write 	Real 	Cmplx 	Int 	 
-_one 					  	
-_var 					  	
-_scalar 						N/A
-_plane 	  				  	
-_every 	  				  	 
+
++--------------+------+-------+------+-------+---------+--------+
+| IO functions | I/O type     | Data type              | decomp |
+|              | Read | Write | Real | Cmplx | Int     |        |
++==============+======|=======+======|=======+=========+========+
+| _one         | X    | X     | X    | X     |         | X      |
+| _var         | X    | X     | X    | X     |         | X      |
+| _scalar      | X    | X     | X    | X     | X       | N/A    |
+| _plane       |      | X     | X    | X     |         | X      |
+| _every       |      | X     | X    | X     |         |        |
++--------------+------+-------+------+-------+---------+--------+
 
 # - decomp refers to a decomposition object that describes an arbitrary-size global data set.
 
 Future Development
+------------------
 
 As these I/O operations are built upon data structured well defined by the decomposition library, it
 is fairly easy to introduce additional functions, should any need arises.
