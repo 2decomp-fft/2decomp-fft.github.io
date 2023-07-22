@@ -109,38 +109,25 @@ Quick I/O Reference
 
 The following table summarises the supported I/O types and data types of the subroutines:
 
-+--------------+------+-------+------+-------+---------+--------+
-| IO functions | I/O type     | Data type              | decomp |
-|              | Read | Write | Real | Cmplx | Int     |        |
-+==============+======|=======+======|=======+=========+========+
-| _one         | X    | X     | X    | X     |         | X      |
-| _var         | X    | X     | X    | X     |         | X      |
-| _scalar      | X    | X     | X    | X     | X       | N/A    |
-| _plane       |      | X     | X    | X     |         | X      |
-| _every       |      | X     | X    | X     |         |        |
-+--------------+------+-------+------+-------+---------+--------+
++--------------+------+-------+------+-------+---------+-------------+
+| IO functions | I/O type     | Data type              | decomp [*]_ |
++              +------+-------+------+-------+---------+             +
+|              | Read | Write | Real | Cmplx | Int     |             |
++==============+======+=======+======+=======+=========+=============+
+| _one         | X    | X     | X    | X     |         | X           |
++--------------+------+-------+------+-------+---------+-------------+
+| _var         | X    | X     | X    | X     |         | X           |
++--------------+------+-------+------+-------+---------+-------------+
+| _scalar      | X    | X     | X    | X     | X       | N/A         |
++--------------+------+-------+------+-------+---------+-------------+
+| _plane       |      | X     | X    | X     |         | X           |
++--------------+------+-------+------+-------+---------+-------------+
+| _every       |      | X     | X    | X     |         |             |
++--------------+------+-------+------+-------+---------+-------------+
 
-# - decomp refers to a decomposition object that describes an arbitrary-size global data set.
+.. [*] decomp refers to a decomposition object that describes an arbitrary-size global data set.
 
-Future Development
-------------------
-
-As these I/O operations are built upon data structured well defined by the decomposition library, it
-is fairly easy to introduce additional functions, should any need arises.
-
-The I/O library is currently implemented using a straight-forward I/O model - all MPI processes
-collectively read/write individual files. Depending on hardware situations (in particular the file
-system), this model may fail to scale above several thousands of processes. A more scalable I/O
-model, known as multiple writers model, is to use a subset of processes serving as local master,
-each processing data on behalf on a group of processes. This feature will be introduced in a future
-version of the library when there are clear practical requirements.
-
-Sketches of two I/O models.
-
-I/O Optimisation for LUSTRE File System
+ADIOS2 backend for IO
 ---------------------------------------
 
-LUSTRE is a widely used distributed file system. On LUSTRE, files are 'striped' across multiple
-object storage targets (physical disks) that can be accessed in parallel to acheive high
-performance. Naturally, the best striping strategy is dependent on hardware configurations and
-software parameters (such as file sizes).
+aa
