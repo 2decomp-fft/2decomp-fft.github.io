@@ -42,9 +42,22 @@ reduced precision writing (when enabled at compile time, MPI-IO only; default ``
 enabling ADIOS2's deferred writer mode (default ``.true.``).
 
 To write multiple three-dimensional variables into a file
----------------------------------------------------------
+.........................................................
 
-This function is very useful when creating check-point files or result files. It is in the form of:
+The 2DECOMP&FFT supports two ways of writing multiple variables to a single file, for check-pointing,
+the newer interface is described first and allows alternating between ADIOS2 and MPI-IO backends, the
+older interface is supported for backwards compatibility.
+
+When ``decomp_2d_write_one`` is called, the ``directory`` and ``io_name`` are combined to check
+whether a particular output location is already opened, if not then a new file will be opened and
+written to - this is the "standard" use.
+If, however, a file is opened first then the call to ``decomp_2d_write_one`` will append to the
+current file, resulting in a single file with multiple fields.
+Once the check-pointing is complete the file can then be closed.
+
+The following describes the original interface for writing multiple variables to a file and is only
+supported by the MPI-IO backend. This function is very useful when creating check-point files or
+result files. It is in the form of:
 
 ::
    
