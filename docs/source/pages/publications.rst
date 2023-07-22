@@ -3,7 +3,7 @@ Publications
 =============
 
 Below is a list of publications based on or mentioning the 2DECOMP&FFT library
-================================================================
+==============================================================================
 
 -Zarins, J., Weiland, M., Bartholomew, P., Lapworth, L., & Parsons, M. (2023, January). Detecting Scale-Induced Overflow Bugs in Production HPC Codes. In High Performance Computing. ISC High Performance 2022 International Workshops: Hamburg, Germany, May 29–June 2, 2022, Revised Selected Papers (pp. 33-43). Cham: Springer International Publishing.
 
