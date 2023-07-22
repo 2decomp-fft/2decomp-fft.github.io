@@ -5,8 +5,9 @@ Parallel I/O
 For large-scale applications using thousands of processors, doing proper I/O is often as important
 as having efficient parallel algorithms. 2DECOMP&FFT provides a parallel I/O module to help
 applications handle large data set in parallel. This module takes advantage of the decomposition
-information available in the library kernel and uses MPI-IO to implement some most frequently used
-I/O functions for applications based on 3D Cartesian data structures.
+information available in the library kernel and uses either the MPI-IO or ADIOS2 backends (selected
+at compile time) to implement some most frequently used I/O functions for applications based on 3D
+Cartesian data structures.
 
 All the I/O functions have been packed in a Fortran module:
 
