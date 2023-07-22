@@ -20,21 +20,26 @@ To write a single three-dimensional array to a file
 
 ::
    
-      call decomp_2d_write_one(ipencil,var,filename)
+      call decomp_2d_write_one(ipencil,var,directory,filename,icoarse,io_name)
 
 where ``ipencil`` describes how the data is distributed (valid values are: 1 for X-pencil; 2 for
-Y-pencil and 3 for Z-pencil); var is the reference to the data array, which can be either real or
-complex; filename is the name of the file to be written. A more general form of the subroutine is:
+Y-pencil and 3 for Z-pencil); ``var`` is the reference to the data array, which can be either real or
+complex; ``directory`` is the path to where I/O should be written; ``filename`` is the name of the
+file to be written; ``icoarse`` indicates whether the I/O should be coarsend (valid values are: 0
+for no; 1 for the ``nstat`` and 2 for the ``nvisu`` coarsenings); ``io_name`` is the name of the I/O
+group to be used. A more general form of the subroutine is:
 
 ::
    
-      call decomp_2d_write_one(ipencil,var,filename, opt_decomp)
+      call decomp_2d_write_one(ipencil,var,directory,filename,icoarse,io_name,opt_decomp,reduce_prec,opt_deferred_writes)
 
-where the global size of the data array is described by the decomposition object opt_decomp (as
+where the global size of the data array is described by the decomposition object ``opt_decomp`` (as
 discussed in the Advanced 2D Decomposition API), allowing distributed array of arbitrary size to be
 written. The file written would contain the 3D array in its natural ijk-order so that it can be
 easily post-processed (for example by a serial code). A corresponding read routine is also
-available.
+available. The optional ``logical`` arguments ``reduce_prec`` and ``opt_deferred_writes`` enable
+reduced precision writing (when enabled at compile time, MPI-IO only; default ``.true.``) and
+enabling ADIOS2's deferred writer mode (default ``.true.``).
 
 To write multiple three-dimensional variables into a file
 ---------------------------------------------------------
