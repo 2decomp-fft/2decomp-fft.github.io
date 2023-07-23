@@ -97,13 +97,14 @@ To write a 2D slice of data from a 3D variable
 
 ::
    
-      call decomp_2d_write_plane(ipencil,var,iplane,n,filename,opt_decomp)
+      call decomp_2d_write_plane(ipencil,var,iplane,n,filename,io_name,opt_decomp)
 
 where ``ipencil`` describes the distribution of the 3D variable ``var``; ``iplane`` defines the
 direction of the desired 2D slice (1 for X-plane; 2 for Y-plane and 3 for Z-plane); ``n`` specifies
-which plane to write out (in global coordinate system); and ``filename`` is the name of the file to
-be written. As before, ``opt_decomp`` is an optional parameter that can be used when ``var`` is of
-non-default size.
+which plane to write out (in global coordinate system) when positive, a value ``n<=1`` will output a
+plane of the average along the ``iplane`` axis; ``filename`` is the name of the file to be
+written; and ``io_name`` is the I/O group performing the write. As before, ``opt_decomp`` is an
+optional parameter that can be used when ``var`` is of non-default size.
 
 To write out a 3D variable in lower resolution to a file
 --------------------------------------------------------
