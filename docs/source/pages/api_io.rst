@@ -149,7 +149,40 @@ The following table summarises the supported I/O types and data types of the sub
 
 .. [*] decomp refers to a decomposition object that describes an arbitrary-size global data set.
 
-ADIOS2 backend for IO
+ADIOS2 backend for I/O
 ---------------------------------------
 
-aa
+By default 2DECOMP&FFT will build with the MPI-IO backend for I/O. The alternative ADIOS2 backend
+can be selected at compile time, by either specifying ``-DIO_BACKEND=adios2`` during configure or by
+modifying the build configuration via ``ccmake``. Due to the way ADIOS2 works, there are a few
+changes necessary to allow codes to work with either backend interchangeably.
+
+Registering variables for I/O
+.............................
+
+Registering a variable for I/O informs ADIOS2 about the variables size and type, with MPI-IO this
+call becomes a ``no-op``.
+
+::
+
+   subroutine decomp_2d_register_variable(io_name,varname,ipencil,icoarse,iplane,type,opt_decomp,opt_nplanes)
+
+The variable is associated with an I/O group through ``io_name``; given a name ``varname``;
+``ipencil``, ``icoarse`` and ``iplane`` determine the orientation and size of the data for I/O (see
+previous descriptions, use ``iplane=0`` for 3D data); and ``type`` specifies the ``kind`` of the
+data, only ``real`` data is currently supported in ADIOS2, i.e. ``real(kind=type)``. The optional
+arguments ``opt_decomp`` and ``opt_nplanes`` are a decomposition object for non-standard sizes (see
+previous descriptions) and ``opt_nplanes`` allows controlling how many planes are written in planar
+output (default 1).
+
+Opening a file for reading or writing
+.....................................
+
+Beginning an I/O step
+.....................
+
+Ending an I/O step
+..................
+
+Closing a file
+..............
