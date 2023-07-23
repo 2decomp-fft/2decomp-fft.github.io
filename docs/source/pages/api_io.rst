@@ -63,18 +63,18 @@ result files. It is in the form of:
    
       call decomp_2d_write_var(fh,disp,ipencil,var)
 
-where fh is a MPI-IO file handle provided by the application (file opened using MPI_FILE_OPEN);
-ipencil describes the distribution of the input data (valid values are: 1 for X-pencil; 2 for
-Y-pencil and 3 for Z-pencil); disp (meaning displacement) is a variable of kind MPI_OFFSET_KIND and
-of intent INOUT - it is like a pointer or file cursor tracking the location where the next chunk of
-data would be written. It is assumed that the data array is in default size, otherwise the function
-also takes a second and more general form:
+where ``fh`` is a MPI-IO file handle provided by the application (file opened using MPI_FILE_OPEN);
+``ipencil`` describes the distribution of the input data (valid values are: 1 for X-pencil; 2 for
+Y-pencil and 3 for Z-pencil); ``disp`` (meaning displacement) is a variable of kind MPI_OFFSET_KIND
+and of intent INOUT - it is like a pointer or file cursor tracking the location where the next chunk
+of data would be written. It is assumed that the data array is in default size, otherwise the
+function also takes a second and more general form:
 
 ::
    
       call decomp_2d_write_var(fh,disp,ipencil,var,opt_decomp)
 
-where the decomposition object opt_decomp describes the arbitrary size of the global array.
+where the decomposition object ``opt_decomp`` describes the arbitrary size of the global array.
 
 To create a restart/checkpointing file, it is often necessary to save key scalar variables as
 well. This can be done using:
@@ -83,8 +83,8 @@ well. This can be done using:
    
       call decomp_2d_write_scalar(fh,disp,n,var)
 
-where var is a 1D array containing n scalars of the same data type. The supported data types are:
-real, complex and integer.
+where ``var`` is a 1D array containing n scalars of the same data type. The supported data types
+are: real, complex and integer.
 
 These subroutines have corresponding read routines with exactly the same set of
 parameters. Applications are responsible for closing the file after everything is written (using
@@ -99,10 +99,11 @@ To write a 2D slice of data from a 3D variable
    
       call decomp_2d_write_plane(ipencil,var,iplane,n,filename,opt_decomp)
 
-where ipencil describes the distribution of the 3D variable var; iplane defines the direction of the
-desired 2D slice (1 for X-plane; 2 for Y-plane and 3 for Z-plane); n specifies which plane to write
-out (in global coordinate system); and filename is the name of the file to be written. As before,
-opt_decomp is an optional parameter that can be used when var is of non-default size.
+where ``ipencil`` describes the distribution of the 3D variable ``var``; ``iplane`` defines the
+direction of the desired 2D slice (1 for X-plane; 2 for Y-plane and 3 for Z-plane); ``n`` specifies
+which plane to write out (in global coordinate system); and ``filename`` is the name of the file to
+be written. As before, ``opt_decomp`` is an optional parameter that can be used when ``var`` is of
+non-default size.
 
 To write out a 3D variable in lower resolution to a file
 --------------------------------------------------------
@@ -115,10 +116,11 @@ write only a subset of the data for analysis.
    
       call decomp_2d_write_every(ipencil,var,iskip,jskip,kskip,filename,from1)
 
-where once again ipencil describes the distribution of the 3D variable var and filename defines the
-name of the file to be written. Every iskip-th points of the data in X-direction, jskip-th in
-Y-direction and every kskip-th in Z-direction are to be written. Finally from1 is a boolean
-flag. Assuming every n-th data points are to be written out, the data points have indices of:
+where once again ``ipencil`` describes the distribution of the 3D variable var and ``filename``
+defines the name of the file to be written. Every ``iskip``-th points of the data in X-direction,
+``jskip``-th in Y-direction and every ``kskip``-th in Z-direction are to be written. Finally
+``from1`` is a boolean flag. Assuming every n-th data points are to be written out, the data points
+have indices of:
 
 * 1,n+1,2n+1... if from1 is ``.true.``
 * n,2n,3n... ff from1 is ``.false.``
