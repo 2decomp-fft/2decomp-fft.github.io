@@ -178,11 +178,49 @@ output (default 1).
 Opening a file for reading or writing
 .....................................
 
+The mode of operation for ADIOS2 is to open a file for I/O and keep this open, buffering multiple
+fields before performing the I/O.
+
+::
+
+   subroutine decomp_2d_open_io(io_name, io_dir, mode)
+
+The output destination ``io_dir`` is where all data will be written to from the group ``io_name``,
+the ``mode`` can take the values ``decomp_2d_write_mode``, ``decomp_2d_read_mode`` or
+``decomp_2d_append_mode`` to write, read or append to a file, respectively. This is required by all
+ADIOS2 I/O, when using the MPI-IO backend I/O operations will open the file on-demand, in which case
+I/O is file-per-field, or if the file is explicitly opened then subsequent I/O call will be into the
+same file.
+
 Beginning an I/O step
 .....................
 
+ADIOS2 performs I/O in "steps", this subroutine marks the beginning of a step to queue up I/O
+operations.
+
+::
+   
+   subroutine decomp_2d_start_io(io_name,io_dir)
+
+The arguments ``io_name`` and ``io_dir`` are as described above. This is a ``no-op`` in the MPI-IO
+backend.
+   
 Ending an I/O step
 ..................
 
+::
+   
+   subroutine decomp_2d_end_io(io_name, io_dir)
+
+This subroutine marks the end of an I/O step and ADIOS2 can begin performing I/O operations. This is
+a ``no-op`` in the MPI-IO backend.
+  
 Closing a file
 ..............
+
+::
+
+   subroutine decomp_2d_close_io(io_name, io_dir)
+
+Closes the I/O destination, must be matched with corresponding call to ``decomp_2d_open_io``. By
+closing the I/O ADIOS2 is forced to perform a ``flush`` operation.
