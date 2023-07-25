@@ -107,7 +107,7 @@ Please note that the complex output arrays obtained from X-pencil and Z-pencil i
 However, if *Hermitian redundancy* is taken into account, no physical information is lost and the real input can be fully recovered 
 through the corresponding inverse FFT from either complex array.
 
-Please also note that ``2decomp&FFT`` does not scale the transforms. So a forward transform followed by a backward transform 
+Please also note that 2DECOMP&FFT does not scale the transforms. So a forward transform followed by a backward transform 
 will not recover the input unless applications normalise the result by the size of the transforms.
 
 Deallocation of the FFT module

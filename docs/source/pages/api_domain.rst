@@ -2,7 +2,8 @@
 2D Pencil Decomposition API
 ===========================
 
-This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. The library interface is designed to be very simple. One can refer to the sample applications for a quick start.
+This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. 
+The library interface is designed to be very simple. One can refer to the sample applications for a quick start.
 
 The 2D Pencil Decomposition API is defined in three Fortran module which should be used by applications as:
 
@@ -65,7 +66,7 @@ The ``decomp_2d_mpi`` cointains global parameters that are used for MPI operatio
 Module **decomp_2d**: decompostion module
 _________________________________________
 
-The ``decomp_2d`` cointains the variables and the routines to perform the global transpostion operations. 
+The ``decomp_2d`` module cointains the variables and the routines to perform the global transpostion operations. 
 The important variables are
 
 * ``nx_global, ny_global, nz_global`` - size of the global data.
@@ -216,7 +217,7 @@ applications need to handle more complex data structures. There are quite a few 
 
 In all these examples, there are multiple global sizes and applications need to be able to distributed 
 different data sets as 2D pencils. 
-``2decomp&FFT`` provides a powerful and flexible programming interface to handle this:
+2DECOMP&FFT provides a powerful and flexible programming interface to handle this:
 
 :: 
 

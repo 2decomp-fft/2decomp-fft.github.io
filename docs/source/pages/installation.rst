@@ -130,7 +130,7 @@ Codes using Makefiles
 _____________________
 
 
-When building a code that links 2decomp-fft using a Makefile you will need to add the include and link paths as appropriate (`inlude/` and `lib/` under the installation directory, respectively).
+When building a code that links 2DECOMP&FFT using a Makefile you will need to add the include and link paths as appropriate (``inlude/`` and ``lib/`` under the installation directory, respectively).
 
 ::
    
@@ -148,7 +148,7 @@ When building a code that links 2decomp-fft using a Makefile you will need to ad
      my_exec: $(OBJ)
 	$(F90) -o $@ $(OBJ) $(LIBS)
 	
-In case 2decomp-fft has been compiled with an external FFT, such as FFTW3, `LIBS` should also contain the following 
+In case 2DECOMP&FFT has been compiled with an external FFT, such as FFTW3, ``LIBS`` should also contain the following 
 
 ::
    
@@ -156,7 +156,7 @@ In case 2decomp-fft has been compiled with an external FFT, such as FFTW3, `LIBS
      LIBFFT=-L$(FFTW3_PATH) -lfftw3 -lfftw3f
      LIBS += $(LIBFFT)
 
-In case of 2decomp-fft compiled for GPU with NVHPC, linking against cuFFT is mandatory
+In case of 2DECOMP&FFT compiled for GPU with NVHPC, linking against cuFFT is mandatory
 
 ``LIBS += -cudalib=cufft``
 
@@ -164,7 +164,7 @@ In case of NCCL the following is required
 
 ``LIBS += -cudalib=cufft,nccl``
 
-It is also possible to drive the build and installation of 2decomp-fft from a Makefile such as in the following example code
+It is also possible to drive the build and installation of 2DECOMP&FFT from a Makefile such as in the following example code
 ::
    
      FC = mpif90
@@ -263,7 +263,7 @@ As a workaround, one can open the file `/path/to/fftw3/install/lib/cmake/fftw3/F
 
   include ("${CMAKE_CURRENT_LIST_DIR}/FFTW3LibraryDepends.cmake")
 
-To build ``2decomp&fft`` against fftw3, one can provide the package configuration for fftw3 in the ``PKG_CONFIG_PATH`` environment variable, 
+To build 2DECOMP&FFT against fftw3, one can provide the package configuration for fftw3 in the ``PKG_CONFIG_PATH`` environment variable, 
 this should be found under ``/path/to/fftw3/install/lib/pkgconfig``. 
 One can also provide the option ``-DFFTW_ROOT=/path/to/fftw3/install``. 
 Then either specify on the command line when configuring the build
