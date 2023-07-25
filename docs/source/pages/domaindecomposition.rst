@@ -9,6 +9,7 @@ In early days, many applications based on structured meshes and using implicit n
 
 .. image:: 1d_decomp.png
   :width: 1000
+
 Figure 1: 1D domain decomposition example using 4 MPI-processes (1 per slab): (a) decomposed in Y direction; (b) decomposed in X direction.
 
 2D Pencil Decomposition
@@ -18,6 +19,7 @@ A 2D pencil decomposition (also known as a 'drawer' or 'block' decomposition) is
 
 .. image:: 2d_decomp.png
   :width: 1200
+
 Figure 2: 2D domain decomposition example using a 4*3 mesh decomposition : (a) X-pencil; (b) Y-pencil; (c) Z-pencil.
 
 Again `MPI_ALLTOALL(V)` can be used to realise the transpositions. However it is significantly more complex than the 1D case. There are two separate communicator groups. For a Prow*Pcol processor grid: Prow groups of Pcol processors need to exchange data among themselves for (a) <=> (b) ; Pcol groups of Prow processors need to exchange data among themselves for (b) <=> (c). For example, the red, green and blue processes in state (b) and (c) occupy exactly the same physical domain.
