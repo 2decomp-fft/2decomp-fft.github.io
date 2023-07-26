@@ -66,51 +66,72 @@ Creating a pull request</a>.</p>
 bug not currently referenced by an existing issue, or have an idea on
 how to improve a part of 2DECOMP&amp;FFT, please open a new item on the issue
 tracker before opening a pull request.</p>
-<p># Contributing</p>
+</div>
+<div class="section" id="id1">
+<h2>Contributing<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><p>You want to contribute but have no idea how ? Please refer to the [Get started](#get-started) section.</p></li>
-<li><p>You have identified a bug ? Please refer to the [Bug](#bug) section.</p></li>
-<li><p>You have improved a part of the code or have developed a new functionality ? Please refer to the [advanced](#advanced-contribution) section.</p></li>
+<li><p>You want to contribute but have no idea how ? Please refer to the section <a class="reference internal" href="#labelgetstarted"><span class="std std-ref">Get started</span></a>.</p></li>
+<li><p>You have identified a bug ? Please refer to the section <a class="reference internal" href="#labelbug"><span class="std std-ref">Bug</span></a>.</p></li>
+<li><p>You have improved a part of the code or have developed a new functionality ?
+Please refer to the section <a class="reference internal" href="#labeladvanced"><span class="std std-ref">Advanced contribution</span></a>.</p></li>
 </ol>
-<p>## Get started</p>
-<p>The recommended strategy to contribute is to start with a [discussion](<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/discussions">https://github.com/2decomp-fft/2decomp-fft/discussions</a>) or to pick an existing issue.
-To modify or experiment with the code, fork the 2decomp github repository and commit changes in a dedicated branch of your fork.
-When the modification is ready for review, one can open a pull request as described in the [advanced](#advanced-contribution) section below.</p>
-<p>## Bug</p>
-<p>It appears that you have identified a bug in the 2decomp library.
-If you are not sure this is really a bug in the library, you should go to the [discussions](<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/discussions">https://github.com/2decomp-fft/2decomp-fft/discussions</a>) section and open a new discussion.
+<div class="section" id="get-started">
+<span id="labelgetstarted"></span><h3>Get started<a class="headerlink" href="#get-started" title="Permalink to this headline">¶</a></h3>
+<p>The recommended strategy to contribute is to start with a
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/discussions">discussion</a>
+or to pick an
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/issues">existing issue</a>.
+To modify or experiment with the code, fork the 2DECOMP&amp;FFT github repository
+and commit changes in a dedicated branch of your fork.
+When the modification is ready for review, one can open a pull request as described in the section
+<a class="reference internal" href="#labeladvanced"><span class="std std-ref">Advanced contribution</span></a> below.</p>
+</div>
+<div class="section" id="bug">
+<span id="labelbug"></span><h3>Bug<a class="headerlink" href="#bug" title="Permalink to this headline">¶</a></h3>
+<p>It appears that you have identified a bug in the 2DECOMP&amp;FFT library.
+If you are not sure this is really a bug in the library,
+you should go to the
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/discussions">discussions</a>
+section and open a new discussion.
 Otherwise, follow the steps below.</p>
-<p>Firstly, try to reproduce the error with a debug build of the library, a small problem size and a small number of MPI ranks.
+<p>Firstly, try to reproduce the error with a debug build of the library,
+a small problem size and a small number of MPI ranks.
 It makes bug-hunting much easier.
 Unfortunately, this is not always possible.
 Please note that for a debug build, the log contains all the environment variables.
 Use it to hunt the bug but think twice before sharing it as it can expose sensitive and personal information.
 At least, please try to reproduce the bug on another machine with another compiler.</p>
-<p>Secondly, if you have modified the source code of the 2decomp library, you must reproduce the bug without the modifications in 2decomp.
+<p>Secondly, if you have modified the source code of the 2DECOMP&amp;FFT library,
+you must reproduce the bug without the modifications in 2DECOMP&amp;FFT.
 The development team can only provide support for sections of code available in the present repository.</p>
 <p>Thirdly, you must provide a minimal working example.
-The program using 2decomp and exposing the bug should be relatively small.
+The program using 2DECOMP&amp;FFT and exposing the bug should be relatively small.
 The development team will not provide support if the program exposing the bug is very long.
 The programs available in the examples section are a good starting point for a minimal working example, ideally you could contribute the minimal working example to the existing examples.</p>
 <p>At this stage, you probably did your best to simplify the problem at hand.
 Open an issue and select the bug report template.
-Provide a meaningful title, do your best to complete all the sections of the template and provide the version of the compiler, the version of the MPI / FFT library, …
+Provide a meaningful title, do your best to complete all the sections of the template
+and provide the version of the compiler, the version of the MPI / FFT library, …
 If you think you have a fix for the bug, please expose it inside the issue.
 It is recommended to wait for feedback before opening a pull request.</p>
-<p>## Advanced contribution</p>
+</div>
+<div class="section" id="advanced-contribution">
+<span id="labeladvanced"></span><h3>Advanced contribution<a class="headerlink" href="#advanced-contribution" title="Permalink to this headline">¶</a></h3>
 <p>One should read this section before opening a pull request.
 To fix a bug, please open an issue and use the bug report template first.
 To improve a part of the code or develop a new functionality, please open an issue and use the feature request template first.
-If you are not sure about your contribution, open a [discussion](<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/discussions">https://github.com/2decomp-fft/2decomp-fft/discussions</a>) first.
+If you are not sure about your contribution, open a
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/discussions">discussion</a> first.
 This helps raise awareness of the work and prevents repeated effort from occurring.</p>
-<p>The code in a pull-request should be formatted using the <cite>fprettify</cite> program.
-See the code sample in the <cite>scripts</cite> folder.</p>
+<p>The code in a pull-request should be formatted using the <code class="docutils literal notranslate"><span class="pre">fprettify</span></code> program.
+See the code sample in the <code class="docutils literal notranslate"><span class="pre">scripts</span></code> folder.</p>
 <p>Pull requests must be focused, small, coherent and have a detailed description.
 The longer the pull request, the harder the review.
 Please empathise with your fellow contributors who are going to spend time reviewing your code.</p>
 <p>As long as the pull request is open for discussion and not ready for merging, convert it to draft.
 Whenever it is ready for merging, convert it to a regular pull request.
 Please note that reviewers might push modifications directly to your branch or request changes.</p>
+</div>
 </div>
 </div>
 
@@ -141,6 +162,7 @@ Please note that reviewers might push modifications directly to your branch or r
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview-of-the-contribution-process">Overview of the contribution process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Contributing</a></li>
 </ul>
 </li>
 </ul>
