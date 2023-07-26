@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Domain Decomposition Strategies" href="domaindecomposition.html" />
-    <link rel="prev" title="Welcome to the documentation for the 2decomp&amp;fft library!" href="../index.html" />
+    <link rel="prev" title="Welcome to the documentation for the 2DECOMP&amp;FFT library!" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,33 +38,56 @@
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="building">
 <h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
-<p>The build system is driven by <cite>cmake</cite>. It is good practice to directly point to the MPI Fortran wrapper that you would like to use to guarantee consistency between Fortran compiler and MPI. This can be done by setting the default Fortran environmental variable</p>
-<p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">FC=my_mpif90</span></code></p>
+<p>The build system is driven by <code class="docutils literal notranslate"><span class="pre">cmake</span></code>. It is good practice to directly point to the MPI Fortran wrapper
+that you would like to use to guarantee consistency between Fortran compiler and MPI.
+This can be done by setting the default Fortran environmental variable</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">FC</span><span class="o">=</span><span class="n">my_mpif90</span>
+</pre></div>
+</div>
 <p>To generate the build system run</p>
-<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">$path_to_sources</span> <span class="pre">-B</span> <span class="pre">$path_to_build_directory</span> <span class="pre">-DOPTION1</span> <span class="pre">-DOPTION2</span> <span class="pre">...</span></code></p>
-<p>If the directory does not exist it will be generated and it will contain the configuration files. The configuration can be further edited by using the <cite>ccmake</cite> utility as</p>
-<p><code class="docutils literal notranslate"><span class="pre">ccmake</span> <span class="pre">$path_to_build_directory</span></code></p>
-<p>and editing as desired, variables that are likely of interest are: <cite>CMAKE_BUILD_TYPE</cite> and <cite>FFT_Choice</cite>; additional variables can be shown by entering “advanced mode” by pressing <cite>t</cite>.</p>
-<p>By default a <cite>RELEASE</cite> build will built, other options for <cite>CMAKE_BUILD_TYPE</cite> are <cite>DEBUG</cite> and <cite>DEV</cite> which turn on debugging flags and additionally try to catch coding errors at compile time, respectively.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmake -S $path_to_sources -B $path_to_build_directory -DOPTION1 -DOPTION2 ...
+</pre></div>
+</div>
+<p>If the directory does not exist it will be generated and it will contain the configuration files.
+The configuration can be further edited by using the <code class="docutils literal notranslate"><span class="pre">ccmake</span></code> utility as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ccmake $path_to_build_directory
+</pre></div>
+</div>
+<p>and editing as desired, variables that are likely of interest are: <code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> and <code class="docutils literal notranslate"><span class="pre">FFT_Choice</span></code>;
+additional variables can be shown by entering <cite>advanced mode</cite> by pressing <cite>t</cite>.</p>
+<p>By default a <code class="docutils literal notranslate"><span class="pre">RELEASE</span></code> build will built, other options for <code class="docutils literal notranslate"><span class="pre">CMAKE_BUILD_TYPE</span></code> are <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> and <cite>DEV</cite>
+which turn on debugging flags and additionally try to catch coding errors at compile time, respectively.</p>
 <p>The behaviour of debug and development versions of the library can be changed before the
-initialization using the variable <code class="docutils literal notranslate"><span class="pre">decomp_debug</span></code> or the environment variable <code class="docutils literal notranslate"><span class="pre">DECOMP_2D_DEBUG</span></code>. The value provided with the environment variable must be a positive integer below 9999.</p>
-<p>Two <cite>BUILD_TARGETS</cite> are available namely <cite>mpi</cite> and <cite>gpu</cite>.  For the <cite>mpi</cite> target no additional options should be required. whereas for <cite>gpu</cite> extra options are necessary at the configure stage. Please see section [GPU Compilation](#gpu-compilation)</p>
-<p>Once the build system has been configured, you can build <cite>2decomp&amp;fft</cite> by running</p>
-<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--build</span> <span class="pre">$path_to_build_directory</span> <span class="pre">-j</span> <span class="pre">&lt;nproc&gt;</span></code></p>
-<p>appending <cite>-v</cite> will display additional information about the build, such as compiler flags.</p>
+initialization using the variable <code class="docutils literal notranslate"><span class="pre">decomp_debug</span></code> or the environment variable <code class="docutils literal notranslate"><span class="pre">DECOMP_2D_DEBUG</span></code>.
+The value provided with the environment variable must be a positive integer below 9999.</p>
+<p>Two <code class="docutils literal notranslate"><span class="pre">BUILD_TARGETS</span></code> are available namely <code class="docutils literal notranslate"><span class="pre">mpi</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu</span></code>.
+For the <code class="docutils literal notranslate"><span class="pre">mpi</span></code> target no additional options should be required,
+whereas for <code class="docutils literal notranslate"><span class="pre">gpu</span></code> extra options are necessary at the configure stage.
+Please see section [GPU Compilation](#gpu-compilation)</p>
+<p>Once the build system has been configured, you can build 2DECOMP&amp;FFT by running</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmake --build $path_to_build_directory -j &lt;nproc&gt;
+</pre></div>
+</div>
+<p>appending <code class="docutils literal notranslate"><span class="pre">-v</span></code> will display additional information about the build, such as compiler flags.</p>
 <p>After building the library can be tested. Please see section [Testing and examples](#testing-and-examples)</p>
 <p>Options can be added to change the level of verbosity. Finally, the build library can be installed by running</p>
-<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">--install</span> <span class="pre">$path_to_build_directory</span></code></p>
-<p>The default location for <em>libdecomp2d.a</em> is</p>
-<p><code class="docutils literal notranslate"><span class="pre">$path_to_build_directory/opt/lib</span></code> or</p>
-<p><code class="docutils literal notranslate"><span class="pre">$path_to_build_directory/opt/lib64</span></code></p>
-<p>unless the variable <em>CMAKE_INSTALL_PREFIX</em> is modified.</p>
-<p>The module files generated by the build process will similarly be installed to <cite>$path_to_build_directory/opt/install</cite>, users of the library should add this to the include paths for their program.</p>
-<p>As indicated above, by default a static <cite>libdecomp2d.a</cite> will be compiled, if desired a shared library can be built by setting <cite>BUILD_SHARED_LIBS=ON</cite> either on the command line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmake --install $path_to_build_directory
+</pre></div>
+</div>
+<p>The default location for <strong>libdecomp2d.a</strong> is</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">$path_to_build_directory/opt/lib</span></code> or</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$path_to_build_directory/opt/lib64</span></code></p></li>
+</ul>
+<p>unless the variable <code class="docutils literal notranslate"><span class="pre">CMAKE_INSTALL_PREFIX</span></code> is modified.</p>
+<p>The module files generated by the build process will similarly be installed to <code class="docutils literal notranslate"><span class="pre">$path_to_build_directory/opt/install</span></code>,
+users of the library should add this to the include paths for their program.</p>
+<p>As indicated above, by default a static <strong>libdecomp2d.a</strong> will be compiled,
+if desired a shared library can be built by setting <code class="docutils literal notranslate"><span class="pre">BUILD_SHARED_LIBS=ON</span></code> either on the command line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmake -S $path_to_sources -B $path_to_build_directory -DBUILD_SHARED_LIBS=ON
 </pre></div>
 </div>
-<p>or by editing the configuration using <cite>ccmake</cite>.</p>
+<p>or by editing the configuration using <code class="docutils literal notranslate"><span class="pre">ccmake</span></code>.</p>
 <p>This might be useful for a centralised install supporting multiple users that is upgraded over time.</p>
 <p>Occasionally a clean build is required, this can be performed by running</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmake --build $path_to_build_directory --target clean
@@ -77,32 +100,36 @@ initialization using the variable <code class="docutils literal notranslate"><sp
 The implementation is based on CUDA-aware MPI and NVIDIA Collective Communication Library (NCCL).
 The FFT is based on cuFFT.</p>
 <p>To properly configure for GPU build the following needs to be used</p>
-<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">$path_to_sources</span> <span class="pre">-B</span> <span class="pre">$path_to_build_directory</span> <span class="pre">-DBUILD_TARGET=gpu</span></code></p>
-<p>Note, further configuration can be performed using <cite>ccmake</cite>, however the initial configuration of GPU builds must include the <cite>-DBUILD_TARGET=gpu</cite> flag as shown above.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cmake -S $path_to_sources -B $path_to_build_directory -DBUILD_TARGET=gpu
+</pre></div>
+</div>
+<p>Note, further configuration can be performed using <code class="docutils literal notranslate"><span class="pre">ccmake</span></code>,
+however the initial configuration of GPU builds must include the <code class="docutils literal notranslate"><span class="pre">-DBUILD_TARGET=gpu</span></code> flag as shown above.</p>
 <p>By default CUDA aware MPI will be used together with <cite>cuFFT</cite> for the FFT library. The configure will automatically look for the GPU architecture available on the system. If you are building on a HPC system please use a computing node for the installation. Useful variables to be added are</p>
 <blockquote>
-<div><ul>
-<li><p><cite>-DENABLE_NCCL=yes</cite> to activate the NCCL collectives</p></li>
-<li><p><cite>-DENABLE_MANAGED=yes</cite> to activate the automatic memory management form the NVHPC compiler</p>
-<p>If you are getting the following error</p>
-</li>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_NCCL=yes</span></code> to activate the NCCL collectives</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-DENABLE_MANAGED=yes</span></code> to activate the automatic memory management form the NVHPC compiler</p></li>
 </ul>
 </div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">--</span> <span class="pre">The</span> <span class="pre">CUDA</span> <span class="pre">compiler</span> <span class="pre">identification</span> <span class="pre">is</span> <span class="pre">unknown</span>
-<span class="pre">CMake</span> <span class="pre">Error</span> <span class="pre">at</span> <span class="pre">/usr/share/cmake/Modules/CMakeDetermineCUDACompiler.cmake:633</span> <span class="pre">(message):</span>
-<span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">detect</span> <span class="pre">a</span> <span class="pre">default</span> <span class="pre">CUDA</span> <span class="pre">architecture.</span></code>,</p>
-<dl>
-<dt>It is possible that your default C compiler is too recent and not supported by <cite>nvcc</cite> . You might be able to solve the issue by adding</dt><dd><ul class="simple">
-<li><p><cite>-DCMAKE_CUDA_HOST_COMPILER=$supported_gcc</cite></p></li>
-</ul>
-<p>At the moment the supported CUDA host compilers are <cite>gcc11</cite> and earlier.</p>
-</dd>
-</dl>
+<p>If you are getting the following error</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span> <span class="n">The</span> <span class="n">CUDA</span> <span class="n">compiler</span> <span class="n">identification</span> <span class="ow">is</span> <span class="n">unknown</span>
+   <span class="n">CMake</span> <span class="n">Error</span> <span class="n">at</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">cmake</span><span class="o">/</span><span class="n">Modules</span><span class="o">/</span><span class="n">CMakeDetermineCUDACompiler</span><span class="o">.</span><span class="n">cmake</span><span class="p">:</span><span class="mi">633</span> <span class="p">(</span><span class="n">message</span><span class="p">):</span>
+   <span class="n">Failed</span> <span class="n">to</span> <span class="n">detect</span> <span class="n">a</span> <span class="n">default</span> <span class="n">CUDA</span> <span class="n">architecture</span>
+</pre></div>
+</div>
+<p>It is possible that your default C compiler is too recent and not supported by <code class="docutils literal notranslate"><span class="pre">nvcc</span></code>.
+You might be able to solve the issue by adding</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-DCMAKE_CUDA_HOST_COMPILER=$supported_gcc
+</pre></div>
+</div>
+<p>At the moment the latest supported CUDA host compilers are <code class="docutils literal notranslate"><span class="pre">gcc11</span></code> and earlier.</p>
 </div>
 <div class="section" id="linking-from-external-codes">
 <h2>Linking from external codes<a class="headerlink" href="#linking-from-external-codes" title="Permalink to this headline">¶</a></h2>
-<p><strong>Codes using Makefiles</strong></p>
-<p>When building a code that links 2decomp-fft using a Makefile you will need to add the include and link paths as appropriate (<cite>inlude/</cite> and <cite>lib/</cite> under the installation directory, respectively).</p>
+<div class="section" id="codes-using-makefiles">
+<h3>Codes using Makefiles<a class="headerlink" href="#codes-using-makefiles" title="Permalink to this headline">¶</a></h3>
+<p>When building a code that links 2DECOMP&amp;FFT using a Makefile you will need to add the include and link paths as appropriate (<code class="docutils literal notranslate"><span class="pre">inlude/</span></code> and <code class="docutils literal notranslate"><span class="pre">lib/</span></code> under the installation directory, respectively).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DECOMP_ROOT = /path/to/2decomp-fft
 DECOMP_BUILD_DIR = $(DECOMP_ROOT)/build
 DECOMP_INSTALL_DIR ?= $(DECOMP_BUILD_DIR)/opt # Use default unless set by user
@@ -118,17 +145,17 @@ my_exec: $(OBJ)
    $(F90) -o $@ $(OBJ) $(LIBS)
 </pre></div>
 </div>
-<p>In case 2decomp-fft has been compiled with an external FFT, such as FFTW3, <cite>LIBS</cite> should also contain the following</p>
+<p>In case 2DECOMP&amp;FFT has been compiled with an external FFT, such as FFTW3, <code class="docutils literal notranslate"><span class="pre">LIBS</span></code> should also contain the following</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FFTW3_PATH=/my_path_to_FFTW/lib
 LIBFFT=-L$(FFTW3_PATH) -lfftw3 -lfftw3f
 LIBS += $(LIBFFT)
 </pre></div>
 </div>
-<p>In case of 2decomp-fft compiled for GPU with NVHPC, linking against cuFFT is mandatory</p>
+<p>In case of 2DECOMP&amp;FFT compiled for GPU with NVHPC, linking against cuFFT is mandatory</p>
 <p><code class="docutils literal notranslate"><span class="pre">LIBS</span> <span class="pre">+=</span> <span class="pre">-cudalib=cufft</span></code></p>
 <p>In case of NCCL the following is required</p>
 <p><code class="docutils literal notranslate"><span class="pre">LIBS</span> <span class="pre">+=</span> <span class="pre">-cudalib=cufft,nccl</span></code></p>
-<p>It is also possible to drive the build and installation of 2decomp-fft from a Makefile such as in the following example code</p>
+<p>It is also possible to drive the build and installation of 2DECOMP&amp;FFT from a Makefile such as in the following example code</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>FC = mpif90
 BUILD = Release
 
@@ -154,72 +181,98 @@ rm -f $(DECOMP_INSTALL_DIR)/lib/libdecomp.a
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="profiling">
 <h2>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h2>
-<p>Profiling can be activated via <cite>cmake</cite> configuration, the recommended approach is to run the initial configuration as follows:</p>
-<p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">caliper_DIR=/path/to/caliper/install/share/cmake/caliper</span>
-<span class="pre">export</span> <span class="pre">CXX=mpicxx</span>
-<span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">$path_to_sources</span> <span class="pre">-B</span> <span class="pre">$path_to_build_directory</span> <span class="pre">-DENABLE_PROFILER=caliper</span></code></p>
-<p>where <cite>ENABLE_PROFILER</cite> is set to the profiling tool desired, currently supported values are: <cite>caliper</cite>.
-Note that when using <cite>caliper</cite> a C++ compiler is required as indicated in the above command line.</p>
+<p>Profiling can be activated via <code class="docutils literal notranslate"><span class="pre">cmake</span></code> configuration, however, the recommended approach is to run the initial configuration as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export caliper_DIR=/path/to/caliper/install/share/cmake/caliper
+export FC=mpif90
+export CXX=mpicxx
+cmake -S $path_to_sources -B $path_to_build_directory -DENABLE_PROFILER=caliper
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">ENABLE_PROFILER</span></code> is set to the profiling tool desired, currently supported values are: <code class="docutils literal notranslate"><span class="pre">caliper</span></code>.
+Note that when using <strong>caliper</strong> a C++ compiler is required as indicated in the above command line.</p>
 </div>
 <div class="section" id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="list-of-preprocessor-variables">
-<h2>List of preprocessor variables<a class="headerlink" href="#list-of-preprocessor-variables" title="Permalink to this headline">¶</a></h2>
-<p><strong>DEBUG</strong></p>
-<p>This variable is automatically added in debug and dev builds. Extra information is printed when it is present.</p>
-<p><strong>DOUBLE_PREC</strong></p>
-<p>When this variable is not present, the library uses single precision. When it is present, the library uses double precision. This preprocessor variable is driven by the CMake on/off variable <cite>DOUBLE_PRECISION</cite>.</p>
-<p><strong>SAVE_SINGLE</strong></p>
-<p>This variable is valid for double precision builds only. When it is present, snapshots are written in single precision. This preprocessor variable is driven by the CMake on/off variable <cite>SINGLE_PRECISION_OUTPUT</cite>.</p>
-<p><strong>PROFILER</strong></p>
-<p>This variable is automatically added when selecting the profiler. It activates the profiling sections of the code.</p>
-<p><strong>EVEN</strong></p>
-<p>This preprocessor variable is not valid for GPU builds. It leads to padded alltoall operations. This preprocessor variable is driven by the CMake on/off variable <cite>EVEN</cite>.</p>
-<p><strong>OVERWRITE</strong></p>
-<p>This variable leads to overwrite the input array when computing FFT. The support of this flag does not always correspond to in-place transforms, depending on the FFT backend selected, as described above. This preprocessor variable is driven by the CMake on/off variable <cite>ENABLE_INPLACE</cite>.</p>
-<p><strong>HALO_DEBUG</strong></p>
-<p>This variable is used to debug the halo operations. This preprocessor variable is driven by the CMake on/off variable <cite>HALO_DEBUG</cite>.</p>
-<p><strong>_GPU</strong></p>
-<p>This variable is automatically added in GPU builds.</p>
-<p><strong>_NCCL</strong></p>
-<p>This variable is valid only for GPU builds. The NVIDIA Collective Communication Library (NCCL) implements multi-GPU and multi-node communication primitives optimized for NVIDIA GPUs and Networking.</p>
-<p><strong>Optional dependencies</strong></p>
-<p><strong>FFTW</strong></p>
-<p>The library [fftw](<a class="reference external" href="http://www.fftw.org/index.html">http://www.fftw.org/index.html</a>) can be used as a backend for the FFT engine. The version 3.3.10 was tested, is supported and can be downloaded [here](<a class="reference external" href="http://www.fftw.org/download.html">http://www.fftw.org/download.html</a>). Please note that one should build fftw and decomp2d against the same compilers. For build instructions, please check [here](<a class="reference external" href="http://www.fftw.org/fftw3_doc/Installation-on-Unix.html">http://www.fftw.org/fftw3_doc/Installation-on-Unix.html</a>). Below is a suggestion for the compilation of the library in double precision (add <cite>–enable-single</cite> for a single precision build):</p>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">wget</span> <span class="pre">http://www.fftw.org/fftw-3.3.10.tar.gz</span>
-<span class="pre">tar</span> <span class="pre">xzf</span> <span class="pre">fftw-3.3.10.tar.gz</span>
-<span class="pre">mkdir</span> <span class="pre">fftw-3.3.10_tmp</span> <span class="pre">&amp;&amp;</span> <span class="pre">cd</span> <span class="pre">fftw-3.3.10_tmp</span>
-<span class="pre">../fftw-3.3.10/configure</span> <span class="pre">--prefix=xxxxxxx/fftw3/fftw-3.3.10_bld</span> <span class="pre">--enable-shared</span>
-<span class="pre">make</span> <span class="pre">-j</span>
-<span class="pre">make</span> <span class="pre">-j</span> <span class="pre">check</span>
-<span class="pre">make</span> <span class="pre">install</span>
-<span class="pre">`</span></code>
-Please note that the resulting build is not compatible with CMake (<a class="reference external" href="https://github.com/FFTW/fftw3/issues/130">https://github.com/FFTW/fftw3/issues/130</a>). As a workaround, one can open the file <cite>/path/to/fftw3/install/lib/cmake/fftw3/FFTW3Config.cmake</cite> and comment the line</p>
-<p><code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">(&quot;${CMAKE_CURRENT_LIST_DIR}/FFTW3LibraryDepends.cmake&quot;)</span></code></p>
-<p>To build <cite>2decomp&amp;fft</cite> against fftw3, one can provide the package configuration for fftw3 in the <cite>PKG_CONFIG_PATH</cite> environment variable, this should be found under <cite>/path/to/fftw3/install/lib/pkgconfig</cite>. One can also provide the option <cite>-DFFTW_ROOT=/path/to/fftw3/install</cite>. Then either specify on the command line when configuring the build</p>
-<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">.</span> <span class="pre">-B</span> <span class="pre">build</span> <span class="pre">-DFFT_Choice=&lt;fftw|fftw_f03&gt;</span> <span class="pre">-DFFTW_ROOT=/path/to/fftw3/install</span></code></p>
-<p>or modify the build configuration using <cite>ccmake</cite>.</p>
-<p>Note the legacy <cite>fftw</cite> interface lacks interface definitions and will fail when stricter compilation flags are used (e.g. when <cite>-DCMAKE_BUILD_TYPE=Dev</cite>) for this it is recommended to use <cite>fftw_f03</cite> which provides proper interfaces.</p>
+<h3>List of preprocessor variables<a class="headerlink" href="#list-of-preprocessor-variables" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> - This variable is automatically added in debug and dev builds. Extra information is printed when it is present.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DOUBLE_PREC</span></code> - When this variable is not present, the library uses single precision. When it is present, the library uses double precision.
+This preprocessor variable is driven by the <strong>CMake</strong> on/off variable <code class="docutils literal notranslate"><span class="pre">DOUBLE_PRECISION</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SAVE_SINGLE</span></code> - This variable is valid for double precision builds only. When it is present, snapshots are written in single precision.
+This preprocessor variable is driven by the <strong>CMake</strong> on/off variable <code class="docutils literal notranslate"><span class="pre">SINGLE_PRECISION_OUTPUT</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PROFILER</span></code> - This variable is automatically added when selecting the profiler. It activates the profiling sections of the code.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">EVEN</span></code> - This preprocessor variable is not valid for GPU builds. It leads to padded alltoall operations.
+This preprocessor variable is driven by the <strong>CMake</strong> on/off variable <code class="docutils literal notranslate"><span class="pre">EVEN</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OVERWRITE</span></code> - This variable leads to overwrite the input array when computing FFT. The support of this flag does not always correspond to in-place transforms,
+depending on the FFT backend selected, as described above. This preprocessor variable is driven by the <strong>CMake</strong> on/off variable <code class="docutils literal notranslate"><span class="pre">ENABLE_INPLACE</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HALO_DEBUG</span></code> - This variable is used to debug the halo operations. This preprocessor variable is driven by the <strong>CMake</strong> on/off variable <code class="docutils literal notranslate"><span class="pre">HALO_DEBUG</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_GPU</span></code> - This variable is automatically added in GPU builds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">_NCCL</span></code> - This variable is valid only for GPU builds. The NVIDIA Collective Communication Library (NCCL)
+implements multi-GPU and multi-node communication primitives optimized for NVIDIA GPUs and Networking.</p></li>
+</ul>
+</div>
+<div class="section" id="optional-dependencies">
+<h3>Optional dependencies<a class="headerlink" href="#optional-dependencies" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="fftw">
+<h4>FFTW<a class="headerlink" href="#fftw" title="Permalink to this headline">¶</a></h4>
+<p>The library [fftw](<a class="reference external" href="http://www.fftw.org/index.html">http://www.fftw.org/index.html</a>) can be used as a backend for the FFT engine.
+The version 3.3.10 was tested, is supported and can be downloaded [here](<a class="reference external" href="http://www.fftw.org/download.html">http://www.fftw.org/download.html</a>).
+Please note that one should build fftw and decomp2d against the same compilers.
+For build instructions, please check [here](<a class="reference external" href="http://www.fftw.org/fftw3_doc/Installation-on-Unix.html">http://www.fftw.org/fftw3_doc/Installation-on-Unix.html</a>).
+Below is a suggestion for the compilation of the library in double precision (add <code class="docutils literal notranslate"><span class="pre">--enable-single</span></code> for a single precision build):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">fftw</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">fftw</span><span class="o">-</span><span class="mf">3.3</span><span class="o">.</span><span class="mf">10.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">tar</span> <span class="n">xzf</span> <span class="n">fftw</span><span class="o">-</span><span class="mf">3.3</span><span class="o">.</span><span class="mf">10.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">mkdir</span> <span class="n">fftw</span><span class="o">-</span><span class="mf">3.3</span><span class="o">.</span><span class="mi">10</span><span class="n">_tmp</span> <span class="o">&amp;&amp;</span> <span class="n">cd</span> <span class="n">fftw</span><span class="o">-</span><span class="mf">3.3</span><span class="o">.</span><span class="mi">10</span><span class="n">_tmp</span>
+<span class="o">../</span><span class="n">fftw</span><span class="o">-</span><span class="mf">3.3</span><span class="o">.</span><span class="mi">10</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="n">xxxxxxx</span><span class="o">/</span><span class="n">fftw3</span><span class="o">/</span><span class="n">fftw</span><span class="o">-</span><span class="mf">3.3</span><span class="o">.</span><span class="mi">10</span><span class="n">_bld</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">shared</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">j</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">j</span> <span class="n">check</span>
+<span class="n">make</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Please note that the resulting build is not compatible with CMake (<a class="reference external" href="https://github.com/FFTW/fftw3/issues/130">https://github.com/FFTW/fftw3/issues/130</a>).
+As a workaround, one can open the file <cite>/path/to/fftw3/install/lib/cmake/fftw3/FFTW3Config.cmake</cite> and comment the line</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="p">(</span><span class="s2">&quot;$</span><span class="si">{CMAKE_CURRENT_LIST_DIR}</span><span class="s2">/FFTW3LibraryDepends.cmake&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To build 2DECOMP&amp;FFT against fftw3, one can provide the package configuration for fftw3 in the <code class="docutils literal notranslate"><span class="pre">PKG_CONFIG_PATH</span></code> environment variable,
+this should be found under <code class="docutils literal notranslate"><span class="pre">/path/to/fftw3/install/lib/pkgconfig</span></code>.
+One can also provide the option <code class="docutils literal notranslate"><span class="pre">-DFFTW_ROOT=/path/to/fftw3/install</span></code>.
+Then either specify on the command line when configuring the build</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="o">-</span><span class="n">S</span> <span class="o">.</span> <span class="o">-</span><span class="n">B</span> <span class="n">build</span> <span class="o">-</span><span class="n">DFFT_Choice</span><span class="o">=&lt;</span><span class="n">fftw</span><span class="o">|</span><span class="n">fftw_f03</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">DFFTW_ROOT</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">fftw3</span><span class="o">/</span><span class="n">install</span>
+</pre></div>
+</div>
+<p>or modify the build configuration using <code class="docutils literal notranslate"><span class="pre">ccmake</span></code>.</p>
+<p>Note the legacy <strong>fftw</strong> interface lacks interface definitions and will fail when stricter compilation flags are used
+(e.g. when <code class="docutils literal notranslate"><span class="pre">-DCMAKE_BUILD_TYPE=Dev</span></code>) for this it is recommended to use <strong>fftw_f03</strong> which provides proper interfaces.</p>
 </div>
 <div class="section" id="caliper">
-<h2>Caliper<a class="headerlink" href="#caliper" title="Permalink to this headline">¶</a></h2>
-<p>The library [caliper](<a class="reference external" href="https://github.com/LLNL/Caliper">https://github.com/LLNL/Caliper</a>) can be used to profile the execution of the code. The version 2.9.1 was tested and is supported, version 2.8.0 has also been tested and is still expected to work. Please note that one must build caliper and decomp2d against the same C/C++/Fortran compilers and MPI libray. For build instructions, please check [here](<a class="reference external" href="https://github.com/LLNL/Caliper#building-and-installing">https://github.com/LLNL/Caliper#building-and-installing</a>) and [here](<a class="reference external" href="https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install">https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install</a>). Below is a suggestion for the compilation of the library using the GNU compilers:</p>
-<p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/LLNL/Caliper.git</span> <span class="pre">caliper_github</span>
-<span class="pre">cd</span> <span class="pre">caliper_github</span>
-<span class="pre">git</span> <span class="pre">checkout</span> <span class="pre">v2.9.1</span>
-<span class="pre">mkdir</span> <span class="pre">build</span> <span class="pre">&amp;&amp;</span> <span class="pre">cd</span> <span class="pre">build</span>
-<span class="pre">cmake</span> <span class="pre">-DCMAKE_C_COMPILER=gcc</span> <span class="pre">-DCMAKE_CXX_COMPILER=g++</span> <span class="pre">-DCMAKE_Fortran_COMPILER=gfortran</span> <span class="pre">-DCMAKE_INSTALL_PREFIX=../../caliper_build_2.9.1</span> <span class="pre">-DWITH_FORTRAN=yes</span> <span class="pre">-DWITH_MPI=yes</span> <span class="pre">-DBUILD_TESTING=yes</span> <span class="pre">../</span>
-<span class="pre">make</span> <span class="pre">-j</span>
-<span class="pre">make</span> <span class="pre">test</span>
-<span class="pre">make</span> <span class="pre">install</span></code></p>
-<p>After installing Caliper ensure to set <cite>caliper_DIR=/path/to/caliper/install/share/cmake/caliper</cite>.
-Following this the <cite>2decomp-fft</cite> build can be configured to use Caliper profiling as</p>
-<p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-S</span> <span class="pre">.</span> <span class="pre">-B</span> <span class="pre">-DENABLE_PROFILER=caliper</span></code></p>
-<p>or by modifying the configuration to set <cite>ENABLE_PROFILER=caliper</cite> via <cite>ccmake</cite>.</p>
+<h4>Caliper<a class="headerlink" href="#caliper" title="Permalink to this headline">¶</a></h4>
+<p>The library [caliper](<a class="reference external" href="https://github.com/LLNL/Caliper">https://github.com/LLNL/Caliper</a>) can be used to profile the execution of the code. The version 2.9.1 was tested and is supported,
+version 2.8.0 has also been tested and is still expected to work. Please note that one must build caliper and decomp2d against the same C/C++/Fortran compilers and MPI libray. For build instructions,
+please check [here](<a class="reference external" href="https://github.com/LLNL/Caliper#building-and-installing">https://github.com/LLNL/Caliper#building-and-installing</a>) and [here](<a class="reference external" href="https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install">https://software.llnl.gov/Caliper/CaliperBasics.html#build-and-install</a>).
+Below is a suggestion for the compilation of the library using the GNU compilers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/LLNL/Caliper.git caliper_github
+cd caliper_github
+git checkout v2.9.1
+mkdir build &amp;&amp; cd build
+cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_Fortran_COMPILER=gfortran -DCMAKE_INSTALL_PREFIX=../../caliper_build_2.9.1 -DWITH_FORTRAN=yes -DWITH_MPI=yes -DBUILD_TESTING=yes ../
+make -j
+make test
+make install``
+</pre></div>
+</div>
+<p>After installing Caliper ensure to set <code class="docutils literal notranslate"><span class="pre">caliper_DIR=/path/to/caliper/install/share/cmake/caliper</span></code>.
+Following this the 2DECOMP&amp;FFT build can be configured to use Caliper profiling as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cmake</span> <span class="o">-</span><span class="n">S</span> <span class="o">.</span> <span class="o">-</span><span class="n">B</span> <span class="o">-</span><span class="n">DENABLE_PROFILER</span><span class="o">=</span><span class="n">caliper</span>
+</pre></div>
+</div>
+<p>or by modifying the configuration to set <code class="docutils literal notranslate"><span class="pre">ENABLE_PROFILER=caliper</span></code> via <code class="docutils literal notranslate"><span class="pre">ccmake</span></code>.</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -248,8 +301,6 @@ Following this the <cite>2decomp-fft</cite> build can be configured to use Calip
 <li class="toctree-l2"><a class="reference internal" href="#linking-from-external-codes">Linking from external codes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#profiling">Profiling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#list-of-preprocessor-variables">List of preprocessor variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#caliper">Caliper</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="domaindecomposition.html">Domain Decomposition Strategies</a></li>
@@ -264,7 +315,7 @@ Following this the <cite>2decomp-fft</cite> build can be configured to use Calip
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to the documentation for the 2decomp&amp;fft library!</a></li>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to the documentation for the 2DECOMP&amp;FFT library!</a></li>
       <li>Next: <a href="domaindecomposition.html" title="next chapter">Domain Decomposition Strategies</a></li>
   </ul></li>
 </ul>

@@ -36,6 +36,245 @@
             
   <div class="section" id="parallel-i-o">
 <h1>Parallel I/O<a class="headerlink" href="#parallel-i-o" title="Permalink to this headline">¶</a></h1>
+<p>For large-scale applications using thousands of processors, doing proper I/O is often as important
+as having efficient parallel algorithms. 2DECOMP&amp;FFT provides a parallel I/O module to help
+applications handle large data set in parallel. This module takes advantage of the decomposition
+information available in the library kernel and uses either the MPI-IO or ADIOS2 backends (selected
+at compile time) to implement some most frequently used I/O functions for applications based on 3D
+Cartesian data structures.</p>
+<p>All the I/O functions have been packed in a Fortran module:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use</span> <span class="n">decomp_2d_io</span>
+</pre></div>
+</div>
+<div class="section" id="to-write-a-single-three-dimensional-array-to-a-file">
+<h2>To write a single three-dimensional array to a file<a class="headerlink" href="#to-write-a-single-three-dimensional-array-to-a-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_one</span><span class="p">(</span><span class="n">ipencil</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="n">directory</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">icoarse</span><span class="p">,</span><span class="n">io_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">ipencil</span></code> describes how the data is distributed (valid values are: 1 for X-pencil; 2 for
+Y-pencil and 3 for Z-pencil); <code class="docutils literal notranslate"><span class="pre">var</span></code> is the reference to the data array, which can be either real or
+complex; <code class="docutils literal notranslate"><span class="pre">directory</span></code> is the path to where I/O should be written; <code class="docutils literal notranslate"><span class="pre">filename</span></code> is the name of the
+file to be written; <code class="docutils literal notranslate"><span class="pre">icoarse</span></code> indicates whether the I/O should be coarsend (valid values are: 0
+for no; 1 for the <code class="docutils literal notranslate"><span class="pre">nstat</span></code> and 2 for the <code class="docutils literal notranslate"><span class="pre">nvisu</span></code> coarsenings); <code class="docutils literal notranslate"><span class="pre">io_name</span></code> is the name of the I/O
+group to be used. A more general form of the subroutine is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_one</span><span class="p">(</span><span class="n">ipencil</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="n">directory</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">icoarse</span><span class="p">,</span><span class="n">io_name</span><span class="p">,</span><span class="n">opt_decomp</span><span class="p">,</span><span class="n">reduce_prec</span><span class="p">,</span><span class="n">opt_deferred_writes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the global size of the data array is described by the decomposition object <code class="docutils literal notranslate"><span class="pre">opt_decomp</span></code> (as
+discussed in the Advanced 2D Decomposition API), allowing distributed array of arbitrary size to be
+written. The file written would contain the 3D array in its natural ijk-order so that it can be
+easily post-processed (for example by a serial code). A corresponding read routine is also
+available. The optional <code class="docutils literal notranslate"><span class="pre">logical</span></code> arguments <code class="docutils literal notranslate"><span class="pre">reduce_prec</span></code> and <code class="docutils literal notranslate"><span class="pre">opt_deferred_writes</span></code> enable
+reduced precision writing (when enabled at compile time, MPI-IO only; default <code class="docutils literal notranslate"><span class="pre">.true.</span></code>) and
+enabling ADIOS2’s deferred writer mode (default <code class="docutils literal notranslate"><span class="pre">.true.</span></code>).</p>
+<div class="section" id="to-write-multiple-three-dimensional-variables-into-a-file">
+<h3>To write multiple three-dimensional variables into a file<a class="headerlink" href="#to-write-multiple-three-dimensional-variables-into-a-file" title="Permalink to this headline">¶</a></h3>
+<p>The 2DECOMP&amp;FFT library supports two ways of writing multiple variables to a single file which may
+be used for check-pointing purposes, for example. The newer interface is described first and allows
+codes to use the ADIOS2 and MPI-IO backends, the older interface is supported for backwards
+compatibility.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">decomp_2d_write_one</span></code> is called, the <code class="docutils literal notranslate"><span class="pre">directory</span></code> and <code class="docutils literal notranslate"><span class="pre">io_name</span></code> are combined to check
+whether a particular output location is already opened, if not then a new file will be opened and
+written to - this is the “standard” use.  If, however, a file is opened first then the call to
+<code class="docutils literal notranslate"><span class="pre">decomp_2d_write_one</span></code> will append to the current file, resulting in a single file with multiple
+fields.  Once the check-pointing is complete the file can then be closed.</p>
+<p>The following describes the original interface for writing multiple variables to a file and is only
+supported by the MPI-IO backend. This function is very useful when creating check-point files or
+result files. It is in the form of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_var</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span><span class="n">disp</span><span class="p">,</span><span class="n">ipencil</span><span class="p">,</span><span class="n">var</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">fh</span></code> is a MPI-IO file handle provided by the application (file opened using MPI_FILE_OPEN);
+<code class="docutils literal notranslate"><span class="pre">ipencil</span></code> describes the distribution of the input data (valid values are: 1 for X-pencil; 2 for
+Y-pencil and 3 for Z-pencil); <code class="docutils literal notranslate"><span class="pre">disp</span></code> (meaning displacement) is a variable of kind MPI_OFFSET_KIND
+and of intent INOUT - it is like a pointer or file cursor tracking the location where the next chunk
+of data would be written. It is assumed that the data array is in default size, otherwise the
+function also takes a second and more general form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_var</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span><span class="n">disp</span><span class="p">,</span><span class="n">ipencil</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="n">opt_decomp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the decomposition object <code class="docutils literal notranslate"><span class="pre">opt_decomp</span></code> describes the arbitrary size of the global array.</p>
+<p>To create a restart/checkpointing file, it is often necessary to save key scalar variables as
+well. This can be done using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_scalar</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span><span class="n">disp</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">var</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">var</span></code> is a 1D array containing n scalars of the same data type. The supported data types
+are: real, complex and integer.</p>
+<p>These subroutines have corresponding read routines with exactly the same set of
+parameters. Applications are responsible for closing the file after everything is written (using
+MPI_FILE_CLOSE). Again, each chunk of data in the file contains one variable stored in its natural
+order. One major benefit is that it becomes very easy to read the data back into the application
+using a different number of MPI processes.</p>
+</div>
+</div>
+<div class="section" id="to-write-a-2d-slice-of-data-from-a-3d-variable">
+<h2>To write a 2D slice of data from a 3D variable<a class="headerlink" href="#to-write-a-2d-slice-of-data-from-a-3d-variable" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_plane</span><span class="p">(</span><span class="n">ipencil</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="n">iplane</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">io_name</span><span class="p">,</span><span class="n">opt_decomp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">ipencil</span></code> describes the distribution of the 3D variable <code class="docutils literal notranslate"><span class="pre">var</span></code>; <code class="docutils literal notranslate"><span class="pre">iplane</span></code> defines the
+direction of the desired 2D slice (1 for X-plane; 2 for Y-plane and 3 for Z-plane); <code class="docutils literal notranslate"><span class="pre">n</span></code> specifies
+which plane to write out (in global coordinate system) when positive, a value <code class="docutils literal notranslate"><span class="pre">n&lt;=1</span></code> will output a
+plane of the average along the <code class="docutils literal notranslate"><span class="pre">iplane</span></code> axis; <code class="docutils literal notranslate"><span class="pre">filename</span></code> is the name of the file to be
+written; and <code class="docutils literal notranslate"><span class="pre">io_name</span></code> is the I/O group performing the write. As before, <code class="docutils literal notranslate"><span class="pre">opt_decomp</span></code> is an
+optional parameter that can be used when <code class="docutils literal notranslate"><span class="pre">var</span></code> is of non-default size.</p>
+</div>
+<div class="section" id="to-write-out-a-3d-variable-in-lower-resolution-to-a-file">
+<h2>To write out a 3D variable in lower resolution to a file<a class="headerlink" href="#to-write-out-a-3d-variable-in-lower-resolution-to-a-file" title="Permalink to this headline">¶</a></h2>
+<p>Applications using the 2D decomposition often handle quite large data sets. It may not be practical
+to write out everything for post-processing. The following subroutine provide a convenient way to
+write only a subset of the data for analysis.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_write_every</span><span class="p">(</span><span class="n">ipencil</span><span class="p">,</span><span class="n">var</span><span class="p">,</span><span class="n">iskip</span><span class="p">,</span><span class="n">jskip</span><span class="p">,</span><span class="n">kskip</span><span class="p">,</span><span class="n">filename</span><span class="p">,</span><span class="n">from1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where once again <code class="docutils literal notranslate"><span class="pre">ipencil</span></code> describes the distribution of the 3D variable var and <code class="docutils literal notranslate"><span class="pre">filename</span></code>
+defines the name of the file to be written. Every <code class="docutils literal notranslate"><span class="pre">iskip</span></code>-th points of the data in X-direction,
+<code class="docutils literal notranslate"><span class="pre">jskip</span></code>-th in Y-direction and every <code class="docutils literal notranslate"><span class="pre">kskip</span></code>-th in Z-direction are to be written. Finally
+<code class="docutils literal notranslate"><span class="pre">from1</span></code> is a boolean flag. Assuming every n-th data points are to be written out, the data points
+have indices of:</p>
+<ul class="simple">
+<li><p>1,n+1,2n+1… if from1 is <code class="docutils literal notranslate"><span class="pre">.true.</span></code></p></li>
+<li><p>n,2n,3n… ff from1 is <code class="docutils literal notranslate"><span class="pre">.false.</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="quick-i-o-reference">
+<h2>Quick I/O Reference<a class="headerlink" href="#quick-i-o-reference" title="Permalink to this headline">¶</a></h2>
+<p>The following table summarises the supported I/O types and data types of the subroutines:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 10%" />
+<col style="width: 11%" />
+<col style="width: 10%" />
+<col style="width: 11%" />
+<col style="width: 15%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head" rowspan="2"><p>IO functions</p></th>
+<th class="head" colspan="2"><p>I/O type</p></th>
+<th class="head" colspan="3"><p>Data type</p></th>
+<th class="head" rowspan="2"><p>decomp <a class="footnote-reference brackets" href="#id2" id="id1">*</a></p></th>
+</tr>
+<tr class="row-even"><th class="head"><p>Read</p></th>
+<th class="head"><p>Write</p></th>
+<th class="head"><p>Real</p></th>
+<th class="head"><p>Cmplx</p></th>
+<th class="head"><p>Int</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-odd"><td><p>_one</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-even"><td><p>_var</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>_scalar</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>N/A</p></td>
+</tr>
+<tr class="row-even"><td><p>_plane</p></td>
+<td></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td></td>
+<td><p>X</p></td>
+</tr>
+<tr class="row-odd"><td><p>_every</p></td>
+<td></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td><p>X</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">*</a></span></dt>
+<dd><p>decomp refers to a decomposition object that describes an arbitrary-size global data set.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="adios2-backend-for-i-o">
+<h2>ADIOS2 backend for I/O<a class="headerlink" href="#adios2-backend-for-i-o" title="Permalink to this headline">¶</a></h2>
+<p>By default 2DECOMP&amp;FFT will build with the MPI-IO backend for I/O. The alternative ADIOS2 backend
+can be selected at compile time, by either specifying <code class="docutils literal notranslate"><span class="pre">-DIO_BACKEND=adios2</span></code> during configure or by
+modifying the build configuration via <code class="docutils literal notranslate"><span class="pre">ccmake</span></code>. Due to the way ADIOS2 works, there are a few
+changes necessary to allow codes to work with either backend interchangeably.</p>
+<div class="section" id="registering-variables-for-i-o">
+<h3>Registering variables for I/O<a class="headerlink" href="#registering-variables-for-i-o" title="Permalink to this headline">¶</a></h3>
+<p>Registering a variable for I/O informs ADIOS2 about the variables size and type, with MPI-IO this
+call becomes a <code class="docutils literal notranslate"><span class="pre">no-op</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">decomp_2d_register_variable</span><span class="p">(</span><span class="n">io_name</span><span class="p">,</span><span class="n">varname</span><span class="p">,</span><span class="n">ipencil</span><span class="p">,</span><span class="n">icoarse</span><span class="p">,</span><span class="n">iplane</span><span class="p">,</span><span class="nb">type</span><span class="p">,</span><span class="n">opt_decomp</span><span class="p">,</span><span class="n">opt_nplanes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The variable is associated with an I/O group through <code class="docutils literal notranslate"><span class="pre">io_name</span></code>; given a name <code class="docutils literal notranslate"><span class="pre">varname</span></code>;
+<code class="docutils literal notranslate"><span class="pre">ipencil</span></code>, <code class="docutils literal notranslate"><span class="pre">icoarse</span></code> and <code class="docutils literal notranslate"><span class="pre">iplane</span></code> determine the orientation and size of the data for I/O (see
+previous descriptions, use <code class="docutils literal notranslate"><span class="pre">iplane=0</span></code> for 3D data); and <code class="docutils literal notranslate"><span class="pre">type</span></code> specifies the <code class="docutils literal notranslate"><span class="pre">kind</span></code> of the
+data, only <code class="docutils literal notranslate"><span class="pre">real</span></code> data is currently supported in ADIOS2, i.e. <code class="docutils literal notranslate"><span class="pre">real(kind=type)</span></code>. The optional
+arguments <code class="docutils literal notranslate"><span class="pre">opt_decomp</span></code> and <code class="docutils literal notranslate"><span class="pre">opt_nplanes</span></code> are a decomposition object for non-standard sizes (see
+previous descriptions) and <code class="docutils literal notranslate"><span class="pre">opt_nplanes</span></code> allows controlling how many planes are written in planar
+output (default 1).</p>
+</div>
+<div class="section" id="opening-a-file-for-reading-or-writing">
+<h3>Opening a file for reading or writing<a class="headerlink" href="#opening-a-file-for-reading-or-writing" title="Permalink to this headline">¶</a></h3>
+<p>The mode of operation for ADIOS2 is to open a file for I/O and keep this open, buffering multiple
+fields before performing the I/O.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">decomp_2d_open_io</span><span class="p">(</span><span class="n">io_name</span><span class="p">,</span> <span class="n">io_dir</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output destination <code class="docutils literal notranslate"><span class="pre">io_dir</span></code> is where all data will be written to from the group <code class="docutils literal notranslate"><span class="pre">io_name</span></code>,
+the <code class="docutils literal notranslate"><span class="pre">mode</span></code> can take the values <code class="docutils literal notranslate"><span class="pre">decomp_2d_write_mode</span></code>, <code class="docutils literal notranslate"><span class="pre">decomp_2d_read_mode</span></code> or
+<code class="docutils literal notranslate"><span class="pre">decomp_2d_append_mode</span></code> to write, read or append to a file, respectively. This is required by all
+ADIOS2 I/O, when using the MPI-IO backend I/O operations will open the file on-demand, in which case
+I/O is file-per-field, or if the file is explicitly opened then subsequent I/O call will be into the
+same file.</p>
+</div>
+<div class="section" id="beginning-an-i-o-step">
+<h3>Beginning an I/O step<a class="headerlink" href="#beginning-an-i-o-step" title="Permalink to this headline">¶</a></h3>
+<p>ADIOS2 performs I/O in “steps”, this subroutine marks the beginning of a step to queue up I/O
+operations.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">decomp_2d_start_io</span><span class="p">(</span><span class="n">io_name</span><span class="p">,</span><span class="n">io_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The arguments <code class="docutils literal notranslate"><span class="pre">io_name</span></code> and <code class="docutils literal notranslate"><span class="pre">io_dir</span></code> are as described above. This is a <code class="docutils literal notranslate"><span class="pre">no-op</span></code> in the MPI-IO
+backend.</p>
+</div>
+<div class="section" id="ending-an-i-o-step">
+<h3>Ending an I/O step<a class="headerlink" href="#ending-an-i-o-step" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">decomp_2d_end_io</span><span class="p">(</span><span class="n">io_name</span><span class="p">,</span> <span class="n">io_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This subroutine marks the end of an I/O step and ADIOS2 can begin performing I/O operations. This is
+a <code class="docutils literal notranslate"><span class="pre">no-op</span></code> in the MPI-IO backend.</p>
+</div>
+<div class="section" id="closing-a-file">
+<h3>Closing a file<a class="headerlink" href="#closing-a-file" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">decomp_2d_close_io</span><span class="p">(</span><span class="n">io_name</span><span class="p">,</span> <span class="n">io_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Closes the I/O destination, must be matched with corresponding call to <code class="docutils literal notranslate"><span class="pre">decomp_2d_open_io</span></code>. By
+closing the I/O ADIOS2 is forced to perform a <code class="docutils literal notranslate"><span class="pre">flush</span></code> operation.</p>
+</div>
+</div>
 </div>
 
 

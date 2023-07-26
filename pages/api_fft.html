@@ -40,6 +40,8 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use</span> <span class="n">decomp_2d_fft</span>
 </pre></div>
 </div>
+<div class="section" id="initialisation-of-the-fft-module">
+<h2>Initialisation of the FFT module<a class="headerlink" href="#initialisation-of-the-fft-module" title="Permalink to this headline">¶</a></h2>
 <p>The FFT interface is built on top of the 2D decomposition library, which, naturally,
 needs to be initialised first:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">)</span>
@@ -79,7 +81,9 @@ in case of arbitrary defined problem</p></li>
 </ul>
 </li>
 </ol>
-<p><strong>Complex-to-complex Transforms</strong></p>
+</div>
+<div class="section" id="complex-to-complex-transforms">
+<h2>Complex-to-complex Transforms<a class="headerlink" href="#complex-to-complex-transforms" title="Permalink to this headline">¶</a></h2>
 <p>The library supports three-dimensional FFTs whose data is distributed as 2D pencils and stored in ordinary ijk-ordered 3D arrays across processors.
 For complex-to-complex (c2c) FFTs, the user interface is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_3d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
@@ -89,7 +93,9 @@ For complex-to-complex (c2c) FFTs, the user interface is:</p>
 The input array <code class="docutils literal notranslate"><span class="pre">input</span></code> and <code class="docutils literal notranslate"><span class="pre">output</span></code> array out are both complex and</p>
 <p>and have to be either a X-pencil/Z-pencil combination or vice versa, depending on the direction of FFT and
 how the FFT interface is initialised (<code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_X</span></code>, the default, or <code class="docutils literal notranslate"><span class="pre">PHYSICAL_IN_Z</span></code> the optional).</p>
-<p><strong>Real-to-complex &amp; Complex-to-Real Transforms</strong></p>
+</div>
+<div class="section" id="real-to-complex-complex-to-real-transforms">
+<h2>Real-to-complex &amp; Complex-to-Real Transforms<a class="headerlink" href="#real-to-complex-complex-to-real-transforms" title="Permalink to this headline">¶</a></h2>
 <p>The interface for the the real-to-complex and complex-to-real transform is</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_3d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 </pre></div>
@@ -114,14 +120,17 @@ information very similar to the <code class="docutils literal notranslate"><span
 <p>Please note that the complex output arrays obtained from X-pencil and Z-pencil input do not contain identical information.
 However, if <em>Hermitian redundancy</em> is taken into account, no physical information is lost and the real input can be fully recovered
 through the corresponding inverse FFT from either complex array.</p>
-<p>Please also note that <code class="docutils literal notranslate"><span class="pre">2decomp&amp;FFT</span></code> does not scale the transforms. So a forward transform followed by a backward transform
+<p>Please also note that 2DECOMP&amp;FFT does not scale the transforms. So a forward transform followed by a backward transform
 will not recover the input unless applications normalise the result by the size of the transforms.</p>
-<p><strong>Finalisation</strong></p>
+</div>
+<div class="section" id="deallocation-of-the-fft-module">
+<h2>Deallocation of the FFT module<a class="headerlink" href="#deallocation-of-the-fft-module" title="Permalink to this headline">¶</a></h2>
 <p>Finally, to release the memory used by the FFT interface:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_fft_finalize</span>
 </pre></div>
 </div>
 <p>It is possible to re-initialise the FFT interface in the same application at the later stage after it has been finalised, if this becomes necessary.</p>
+</div>
 </div>
 
 

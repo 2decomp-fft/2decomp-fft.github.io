@@ -8,6 +8,9 @@ To use the FFT programming interface, first of all, one additional Fortran modul
 
   use decomp_2d_fft
 
+Initialisation of the FFT module
+________________________________
+
 The FFT interface is built on top of the 2D decomposition library, which, naturally, 
 needs to be initialised first:
 
@@ -55,7 +58,8 @@ The result of the ``decomp_2d_fft_init`` operation is to create two new objects 
    
    * ``PHYSICAL_IN_Z`` - :math:`nx\times ny\times nz/2+1` (default) or :math:`n1\times n2\times n3/2+1` (customized)
 
-**Complex-to-complex Transforms**
+Complex-to-complex Transforms
+_____________________________
 
 The library supports three-dimensional FFTs whose data is distributed as 2D pencils and stored in ordinary ijk-ordered 3D arrays across processors. 
 For complex-to-complex (c2c) FFTs, the user interface is:
@@ -70,7 +74,8 @@ The input array ``input`` and ``output`` array out are both complex and
 and have to be either a X-pencil/Z-pencil combination or vice versa, depending on the direction of FFT and 
 how the FFT interface is initialised (``PHYSICAL_IN_X``, the default, or ``PHYSICAL_IN_Z`` the optional).
 
-**Real-to-complex & Complex-to-Real Transforms**
+Real-to-complex & Complex-to-Real Transforms
+____________________________________________
 
 The interface for the the real-to-complex and complex-to-real transform is 
 
@@ -102,10 +107,11 @@ Please note that the complex output arrays obtained from X-pencil and Z-pencil i
 However, if *Hermitian redundancy* is taken into account, no physical information is lost and the real input can be fully recovered 
 through the corresponding inverse FFT from either complex array.
 
-Please also note that ``2decomp&FFT`` does not scale the transforms. So a forward transform followed by a backward transform 
+Please also note that 2DECOMP&FFT does not scale the transforms. So a forward transform followed by a backward transform 
 will not recover the input unless applications normalise the result by the size of the transforms.
 
-**Finalisation**
+Deallocation of the FFT module
+______________________________
 
 Finally, to release the memory used by the FFT interface:
 

@@ -36,7 +36,8 @@
             
   <div class="section" id="d-pencil-decomposition-api">
 <h1>2D Pencil Decomposition API<a class="headerlink" href="#d-pencil-decomposition-api" title="Permalink to this headline">¶</a></h1>
-<p>This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. The library interface is designed to be very simple. One can refer to the sample applications for a quick start.</p>
+<p>This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy.
+The library interface is designed to be very simple. One can refer to the sample applications for a quick start.</p>
 <p>The 2D Pencil Decomposition API is defined in three Fortran module which should be used by applications as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">use</span> <span class="n">decomp_2d_constants</span>
 <span class="n">use</span> <span class="n">decomp_2d_mpi</span>
@@ -45,7 +46,8 @@
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d_constants</span></code> defines all the parameters, <code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d_mpi</span></code> introduces all the MPI
 related interfaces and <code class="docutils literal notranslate"><span class="pre">use</span> <span class="pre">decomp_2d</span></code> cointains the main decomposition and transposition APIs.</p>
-<p><strong>Module decomp_2d_constant: Global Variables</strong></p>
+<div class="section" id="module-decomp-2d-constant-global-variables">
+<h2>Module <strong>decomp_2d_constant</strong>: Global Variables<a class="headerlink" href="#module-decomp-2d-constant-global-variables" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d_constants</span></code> cointains global parameters that used to define the KIND of floating
 point data (e.g. single or double precision).
 These are used to consistently define the precision of the data type for the viariables
@@ -68,7 +70,9 @@ These types will point to single of double depending on the configuring options.
 <li><p>activate the different FFT backends (generic, FFTW, MKL, cuFFT)</p></li>
 <li><p>define the release major and minor version</p></li>
 </ul>
-<p><strong>Module decomp_2d_mpi: MPI communication</strong></p>
+</div>
+<div class="section" id="module-decomp-2d-mpi-mpi-communication">
+<h2>Module <strong>decomp_2d_mpi</strong>: MPI communication<a class="headerlink" href="#module-decomp-2d-mpi-mpi-communication" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d_mpi</span></code> cointains global parameters that are used for MPI operation:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">nproc</span></code> - the total number of MPI processes. [INT].</p></li>
@@ -77,8 +81,10 @@ These types will point to single of double depending on the configuring options.
 <li><p><code class="docutils literal notranslate"><span class="pre">decomp_2d_about</span></code> - interface to display error message and call MPI_ABORT function.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">decomp_2d_warning</span></code> - interface to display error message together with line number and function.</p></li>
 </ul>
-<p><strong>Module decomp_2d: decompostion module</strong></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d</span></code> cointains the variables and the routines to perform the global transpostion operations.
+</div>
+<div class="section" id="module-decomp-2d-decompostion-module">
+<h2>Module <strong>decomp_2d</strong>: decompostion module<a class="headerlink" href="#module-decomp-2d-decompostion-module" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">decomp_2d</span></code> module cointains the variables and the routines to perform the global transpostion operations.
 The important variables are</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">nx_global,</span> <span class="pre">ny_global,</span> <span class="pre">nz_global</span></code> - size of the global data.</p></li>
@@ -130,7 +136,8 @@ allocate(var(decomp%xst(1):decomp%xen(1), decomp%xst(2):decomp%xen(2), &amp;
 </pre></div>
 </div>
 <p>Allocated arrays can be simply released with an <code class="docutils literal notranslate"><span class="pre">deallocate(var)</span></code> statement.</p>
-<p><strong>Basic 2D Decomposition API</strong></p>
+<div class="section" id="basic-2d-decomposition-api">
+<h3>Basic 2D Decomposition API<a class="headerlink" href="#basic-2d-decomposition-api" title="Permalink to this headline">¶</a></h3>
 <p>All the global variables described above, the defualt common type <code class="docutils literal notranslate"><span class="pre">decomp</span></code> and the MPI initialization is done
 using the following call</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">)</span>
@@ -176,7 +183,9 @@ even sometimes by duplicating computations.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_finalize</span>
 </pre></div>
 </div>
-<p><strong>Advanced 2D Decomposition API</strong></p>
+</div>
+<div class="section" id="advanced-2d-decomposition-api">
+<h3>Advanced 2D Decomposition API<a class="headerlink" href="#advanced-2d-decomposition-api" title="Permalink to this headline">¶</a></h3>
 <p>While the basic decomposition API is very user-friendly, there may be situations in which
 applications need to handle more complex data structures. There are quite a few examples:</p>
 <ul class="simple">
@@ -191,7 +200,7 @@ it is a common practice to enlarge the spatial domain before applying the Fourie
 </ul>
 <p>In all these examples, there are multiple global sizes and applications need to be able to distributed
 different data sets as 2D pencils.
-<code class="docutils literal notranslate"><span class="pre">2decomp&amp;FFT</span></code> provides a powerful and flexible programming interface to handle this:</p>
+2DECOMP&amp;FFT provides a powerful and flexible programming interface to handle this:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TYPE</span><span class="p">(</span><span class="n">DECOMP_INFO</span><span class="p">)</span> <span class="p">::</span> <span class="n">new_decomp</span>
 <span class="n">call</span> <span class="n">decomp_info_init</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">n3</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">)</span>
 </pre></div>
@@ -215,6 +224,8 @@ For example:</p>
 <p>Finally the defined type needs also to be nullified using:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_info_finalize</span><span class="p">(</span><span class="n">new_decomp</span><span class="p">)</span>
 </pre></div>
+</div>
+</div>
 </div>
 </div>
 
