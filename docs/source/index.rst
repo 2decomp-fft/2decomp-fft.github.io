@@ -2,6 +2,7 @@
    sphinx-quickstart on Wed Feb 15 14:31:32 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
+
 =========================================================
 Welcome to the documentation for the 2DECOMP&FFT library!
 =========================================================
