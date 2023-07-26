@@ -2,7 +2,8 @@
 2D Pencil Decomposition API
 ===========================
 
-This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. The library interface is designed to be very simple. One can refer to the sample applications for a quick start.
+This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. 
+The library interface is designed to be very simple. One can refer to the sample applications for a quick start.
 
 The 2D Pencil Decomposition API is defined in three Fortran module which should be used by applications as:
 
@@ -15,7 +16,8 @@ The 2D Pencil Decomposition API is defined in three Fortran module which should 
 The ``use decomp_2d_constants`` defines all the parameters, ``use decomp_2d_mpi`` introduces all the MPI
 related interfaces and ``use decomp_2d`` cointains the main decomposition and transposition APIs. 
       
-**Module decomp_2d_constant: Global Variables**
+Module **decomp_2d_constant**: Global Variables
+_______________________________________________
 
 The ``decomp_2d_constants`` cointains global parameters that used to define the KIND of floating 
 point data (e.g. single or double precision). 
@@ -46,7 +48,8 @@ The module contains additional parameters to control :
 
 * define the release major and minor version
 
-**Module decomp_2d_mpi: MPI communication**
+Module **decomp_2d_mpi**: MPI communication
+___________________________________________
 
 The ``decomp_2d_mpi`` cointains global parameters that are used for MPI operation:  
  
@@ -60,9 +63,10 @@ The ``decomp_2d_mpi`` cointains global parameters that are used for MPI operatio
 
 * ``decomp_2d_warning`` - interface to display error message together with line number and function.
 
-**Module decomp_2d: decompostion module**
+Module **decomp_2d**: decompostion module
+_________________________________________
 
-The ``decomp_2d`` cointains the variables and the routines to perform the global transpostion operations. 
+The ``decomp_2d`` module cointains the variables and the routines to perform the global transpostion operations. 
 The important variables are
 
 * ``nx_global, ny_global, nz_global`` - size of the global data.
@@ -129,7 +133,8 @@ The allocation for a x pencil decomposition would be equivalent to the statement
 
 Allocated arrays can be simply released with an ``deallocate(var)`` statement. 
 
-**Basic 2D Decomposition API**
+Basic 2D Decomposition API
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 All the global variables described above, the defualt common type ``decomp`` and the MPI initialization is done 
 using the following call
@@ -193,7 +198,8 @@ Finally, before exit, applications should clean up the memory by:
 
   call decomp_2d_finalize
 
-**Advanced 2D Decomposition API**
+Advanced 2D Decomposition API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 While the basic decomposition API is very user-friendly, there may be situations in which 
 applications need to handle more complex data structures. There are quite a few examples:
@@ -211,7 +217,7 @@ applications need to handle more complex data structures. There are quite a few 
 
 In all these examples, there are multiple global sizes and applications need to be able to distributed 
 different data sets as 2D pencils. 
-``2decomp&FFT`` provides a powerful and flexible programming interface to handle this:
+2DECOMP&FFT provides a powerful and flexible programming interface to handle this:
 
 :: 
 
