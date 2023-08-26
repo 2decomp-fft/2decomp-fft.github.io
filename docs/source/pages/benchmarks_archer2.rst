@@ -5,6 +5,8 @@
 
   <br/>
 
+.. _benchmark-archer2:
+
 ========================
 Results for CPU: Archer2 
 ========================
@@ -23,7 +25,7 @@ Resuls are listed below
 
 * Transpose complex 3D array 
   
-  * Resolution ``NX=NY=NZ=512`` |br| |CPU_0512_TrReal_Scal| |CPU_0512_TrReal_SpeedUp| 
+  * Resolution ``NX=NY=NZ=512`` |br| |CPU_0512_TrClx_Scal| |CPU_0512_TrClx_SpeedUp| 
 
   * Resolution ``NX=NY=NZ=1024`` |br| |CPU_1024_TrClx_Scal| |CPU_1024_TrClx_SpeedUp|
 

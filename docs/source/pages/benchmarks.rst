@@ -68,4 +68,5 @@ The library has been benchmark on the following systems:
    :caption: Here the detailed list of the results:
 
    benchmarks_archer2.rst
+   benchmarks_cirrus.rst
 
