@@ -36,9 +36,45 @@
             
   <div class="section" id="fast-fourier-transforms">
 <h1>Fast Fourier Transforms<a class="headerlink" href="#fast-fourier-transforms" title="Permalink to this headline">¶</a></h1>
-<p>The Discrete Fourier Transform (DFT) plays an important role in many scientific and technical applications, including time-series and waveform analysis, solutions to linear partial
-differential equations, convolution, digital signal processing, and image filtering. Many algorithms have been proposed to compute DFTs with a good efficiency and the most famous clas of efficient algorithms is generally referred to as fast Fourier transform (FFT) algorithms.</p>
-<p>The 2Decomp&amp;FFT is providing an API to perform FFTs at scale using a 2D Domain Decomposition on CPUs and on GPUs. There are hundreds of FFT software packages available but only few of them suitable for multi-GPUs.</p>
+<p>The Discrete Fourier Transform (DFT) plays an important role in many scientific and technical applications,
+including time-series and waveform analysis, solutions to linear partial
+differential equations, convolution, digital signal processing, and image filtering.
+Many algorithms have been proposed to compute DFTs with a good efficiency
+and the most famous clas of efficient algorithms is generally referred to
+as fast Fourier transform (FFT) algorithms.</p>
+<p>The 2DECOMP&amp;FFT is providing an API to perform FFTs at scale using 1D and 2D Domain Decompositions
+on both CPUs and on GPUs.
+Although capable of doing actual FFT computations, 2DECOMP&amp;FFT is mainly designed to performs data management
+and communications. The actual computations of 1D FFTs are delegated to a 3rd-party FFT library,
+assuming it is already fully optimised to run on a single CPU core.
+2DECOMP&amp;FFT interfaces with several every popular FFT implementations so users have the freedom
+to choose their favourite packages.</p>
+<p>Here is the list of FFT engines:</p>
+<ul>
+<li><p><strong>Generic</strong> - This is 2DECOMP&amp;FFT’s own FFT implementation.
+It is based on an algorithm that is attributed to Glassman (refer to Glassman’s general N Fast Fourier Transform).
+It is not particularly efficient, but serves two purposes:</p>
+<ul class="simple">
+<li><p>It makes the package independent to external libraries, aiding portability.</p></li>
+<li><p>It takes over the computation if the external FFT engine fails to work
+(for example, if a user mistakenly passes in an input with length not supported by the underlying FFT engine).</p></li>
+</ul>
+<p>It is not recommended to use this FFT engine in production works as it may lose 2 digits
+of accuracy when running in double-precision mode.</p>
+</li>
+<li><p><strong>FFTW</strong> - FFTW is the most popular open-source FFT implementation and it likely to work reasonably well
+on all hardware due to its auto-tuning feather.
+Version 3.x of FFTW API is used.
+Version 3.3 of FFTW contains a Fortran 2003 interface, as well as the old legacy Fortran interface.
+A second FFTW implementation based on the new interface is also available in 2DECOMP&amp;FFT, labelled FFTW_f03.
+One benefit of the F2003 interface is the guaranteed memory alignment,
+although this does not seem to make any major difference in term of performances.
+Many vendors support (such as CRAY) directly support FFTW on their systems.</p></li>
+<li><p><strong>MKL</strong> - The Intel Math Kernel Library implementation is to help port the code onto systems using Intel CPUs.
+It is also possible to link the FFTW implementation above directly to MKL.</p></li>
+<li><p><strong>cuFFT</strong> - This FFT backhand enable 2DECOMP&amp;FFT to run on NVIDIA GPUs. It is available in conjunction with
+the NVHPC compiler.</p></li>
+</ul>
 </div>
 
 

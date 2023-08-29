@@ -16,7 +16,7 @@
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Publications" href="publications.html" />
+    <link rel="next" title="Results for CPU: Archer2" href="benchmarks_archer2.html" />
     <link rel="prev" title="Parallel I/O" href="api_io.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -36,6 +36,57 @@
             
   <div class="section" id="benchmarks">
 <h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this headline">¶</a></h1>
+<p>This page report the result of some scalability tests which are available in the under
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/tree/main/examples">example</a>
+The test being performed are the following:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/blob/main/examples/test2d/timing2d_real.f90">Transpose of a real</a>
+3D array.</p></li>
+<li><p><a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/blob/main/examples/test2d/timing2d_complex.f90">Transpose of a complex</a> 3D array.</p></li>
+<li><p>3D FFT trasform
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/blob/main/examples/fft_physical_x/fft_r2c_x.f90">(fft_r2c_x)</a>
+of a <strong>real</strong> 3D array starting from <cite>X</cite> physical direction.
+The trasform has both forward and backward to retrieve the inout array.</p></li>
+<li><p>3D FFT trasform
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/blob/main/examples/fft_physical_x/fft_c2c_x.f90">(fft_c2c_x)</a>
+of a <strong>complex</strong> 3D array starting from <cite>X</cite> physical direction.
+The trasform has both forward and backward to retrieve the inout array.</p></li>
+<li><p>3D FFT trasform
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/blob/main/examples/fft_physical_z/fft_r2c_z.f90">(fft_r2c_z)</a>
+of a <strong>real</strong> 3D array starting from <cite>Z</cite> physical direction.
+The trasform has both forward and backward to retrieve the inout array.</p></li>
+<li><p>3D_FFT_trasform
+<a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/blob/main/examples/fft_physical_z/fft_c2c_z.f90">(fft_c2c_z)</a>
+of a <strong>complex</strong> 3D array starting from <cite>Z</cite> physical direction.
+The trasform has both forward and backward to retrieve the inout array.</p></li>
+</ol>
+<p>All timing are collected averaging 50 repetitions of the test with the 0 iteration being discarded.
+Two resolutions have been tested:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NX=NY=NZ=512</span></code> which corresponds to rougly 130 million points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NX=NY=NZ=1024</span></code> which corresponds to rougly 1 billion points.</p></li>
+</ul>
+<p>A <strong>2D</strong> label for the results indicates a 2D (i.e. pencils) decomposition using the optimal automatic configuration
+(that generally corresponds to the closest decomposition to <code class="docutils literal notranslate"><span class="pre">NR=NC</span></code>).
+A <strong>1D</strong> label for the results indicates a 1D (i.e. slabs) decomposition. With 2DECOMP&amp;FFT this is obatained
+forcing one of the two decomposition direction to 1. If <code class="docutils literal notranslate"><span class="pre">N_ROW=1</span></code> an initial <code class="docutils literal notranslate"><span class="pre">Z</span></code> slabs
+(i.e. local memory data are in the <code class="docutils literal notranslate"><span class="pre">XY</span></code> plane) is obatained,
+conversely <code class="docutils literal notranslate"><span class="pre">N_COL=1</span></code> start from a <code class="docutils literal notranslate"><span class="pre">X</span></code> slabs configuration
+(i.e. local memmory data are in the <code class="docutils literal notranslate"><span class="pre">YZ</span></code> plane).
+Generally only one set of slabs data are plotted since performances are relatively similar.</p>
+<p>The library has been benchmark on the following systems:</p>
+<ul class="simple">
+<li><p>The UK National Supercomputer service <a class="reference external" href="https://www.archer2.ac.uk">Archer2</a></p></li>
+<li><p>The GPU partition of the EPCC <a class="reference external" href="https://github.com/2decomp-fft/2decomp-fft/tree/main/examples">Cirrus</a>
+service</p></li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Here the detailed list of the results:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks_archer2.html">Results for CPU: Archer2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks_cirrus.html">Results for GPU: Cirrus</a></li>
+</ul>
+</div>
 </div>
 
 
@@ -61,7 +112,11 @@
 <li class="toctree-l1"><a class="reference internal" href="domaindecomposition.html">Domain Decomposition Strategies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fft.html">Fast Fourier Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="benchmarks_archer2.html">Results for CPU: Archer2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="benchmarks_cirrus.html">Results for GPU: Cirrus</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
 </ul>
@@ -71,7 +126,7 @@
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
       <li>Previous: <a href="api_io.html" title="previous chapter">Parallel I/O</a></li>
-      <li>Next: <a href="publications.html" title="next chapter">Publications</a></li>
+      <li>Next: <a href="benchmarks_archer2.html" title="next chapter">Results for CPU: Archer2</a></li>
   </ul></li>
 </ul>
 </div>
