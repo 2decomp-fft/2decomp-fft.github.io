@@ -3,7 +3,9 @@
 ===========================
 
 This page explains the key public interfaces of the 2D decomposition library. After reading this section, users should be able to easily build applications using this domain decomposition strategy. 
-The library interface is designed to be very simple. One can refer to the sample applications for a quick start.
+The library interface is designed to be very simple. One can refer to the 
+`example applications <https://github.com/2decomp-fft/2decomp-fft/tree/main/examples>`_ 
+for a quick start.
 
 The 2D Pencil Decomposition API is defined in three Fortran module which should be used by applications as:
 
