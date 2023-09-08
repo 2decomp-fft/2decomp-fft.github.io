@@ -126,6 +126,9 @@ have indices of:
 * 1,n+1,2n+1... if from1 is ``.true.``
 * n,2n,3n... ff from1 is ``.false.``
 
+Due to the way ADIOS2 handles memory, this is not currently supported by the ADIOS2 backend. If file
+size is an issue, compression can be enabled at runtime via the ADIOS2 configuration file.
+
 Quick I/O Reference
 -------------------
 
