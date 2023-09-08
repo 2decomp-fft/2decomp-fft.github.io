@@ -110,7 +110,7 @@ To write out a 3D variable in lower resolution to a file
 --------------------------------------------------------
 
 Applications using the 2D decomposition often handle quite large data sets. It may not be practical
-to write out everything for post-processing. The following subroutine provide a convenient way to
+to write out everything for post-processing. The following subroutine provides a convenient way to
 write only a subset of the data for analysis.
 
 ::
