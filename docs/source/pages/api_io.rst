@@ -25,7 +25,7 @@ To write a single three-dimensional array to a file
 where ``ipencil`` describes how the data is distributed (valid values are: 1 for X-pencil; 2 for
 Y-pencil and 3 for Z-pencil); ``var`` is the reference to the data array, which can be either real or
 complex; ``directory`` is the path to where I/O should be written; ``filename`` is the name of the
-file to be written; ``icoarse`` indicates whether the I/O should be coarsend (valid values are: 0
+file to be written; ``icoarse`` indicates whether the I/O should be coarsened (valid values are: 0
 for no; 1 for the ``nstat`` and 2 for the ``nvisu`` coarsenings); ``io_name`` is the name of the I/O
 group to be used. A more general form of the subroutine is:
 
@@ -110,7 +110,7 @@ To write out a 3D variable in lower resolution to a file
 --------------------------------------------------------
 
 Applications using the 2D decomposition often handle quite large data sets. It may not be practical
-to write out everything for post-processing. The following subroutine provide a convenient way to
+to write out everything for post-processing. The following subroutine provides a convenient way to
 write only a subset of the data for analysis.
 
 ::
@@ -125,6 +125,9 @@ have indices of:
 
 * 1,n+1,2n+1... if from1 is ``.true.``
 * n,2n,3n... ff from1 is ``.false.``
+
+Due to the way ADIOS2 handles memory, this is not currently supported by the ADIOS2 backend. If file
+size is an issue, compression can be enabled at runtime via the ADIOS2 configuration file.
 
 Quick I/O Reference
 -------------------
