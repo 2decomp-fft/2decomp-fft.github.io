@@ -25,21 +25,22 @@ To write a single three-dimensional array to a file
 where ``ipencil`` describes how the data is distributed (valid values are: 1 for X-pencil; 2 for
 Y-pencil and 3 for Z-pencil); ``var`` is the reference to the data array, which can be either real or
 complex; ``directory`` is the path to where I/O should be written; ``filename`` is the name of the
-file to be written; ``icoarse`` indicates whether the I/O should be coarsend (valid values are: 0
-for no; 1 for the ``nstat`` and 2 for the ``nvisu`` coarsenings); ``io_name`` is the name of the I/O
-group to be used. A more general form of the subroutine is:
+file to be written; ``icoarse`` indicates whether the I/O should be coarsened (valid values are: 0
+for no coarsening; 1 for the ``nstat`` and 2 for the ``nvisu`` coarsenings); ``io_name`` is the name of
+the I/O group to be used. 
+
+A more general form of the subroutine is:
 
 ::
    
       call decomp_2d_write_one(ipencil,var,directory,filename,icoarse,io_name,opt_decomp,reduce_prec,opt_deferred_writes)
 
-where the global size of the data array is described by the decomposition object ``opt_decomp`` (as
-discussed in the Advanced 2D Decomposition API), allowing distributed array of arbitrary size to be
-written. The file written would contain the 3D array in its natural ijk-order so that it can be
-easily post-processed (for example by a serial code). A corresponding read routine is also
-available. The optional ``logical`` arguments ``reduce_prec`` and ``opt_deferred_writes`` enable
-reduced precision writing (when enabled at compile time, MPI-IO only; default ``.true.``) and
-enabling ADIOS2's deferred writer mode (default ``.true.``).
+where the global size of the data array is described by the decomposition object ``opt_decomp``,
+allowing distributed arrays of arbitrary size to be written. The file written would contain the 3D
+array in its natural ijk-order so that it can be easily post-processed (for example by a serial code).
+A corresponding read routine is also available. The optional ``logical`` arguments ``reduce_prec`` and
+``opt_deferred_writes`` enable reduced precision writing (when enabled at compile time, MPI-IO only; default
+``.true.``) and enabling ADIOS2's deferred writer mode (default ``.true.``).
 
 To write multiple three-dimensional variables into a file
 .........................................................
@@ -63,20 +64,24 @@ result files. It is in the form of:
    
       call decomp_2d_write_var(fh,disp,ipencil,var)
 
-where ``fh`` is a MPI-IO file handle provided by the application (file opened using MPI_FILE_OPEN);
+where ``fh`` is an MPI-IO file handle provided by the application (obtained using MPI_FILE_OPEN);
 ``ipencil`` describes the distribution of the input data (valid values are: 1 for X-pencil; 2 for
-Y-pencil and 3 for Z-pencil); ``disp`` (meaning displacement) is a variable of kind MPI_OFFSET_KIND
-and of intent INOUT - it is like a pointer or file cursor tracking the location where the next chunk
-of data would be written. It is assumed that the data array is in default size, otherwise the
-function also takes a second and more general form:
+Y-pencil and 3 for Z-pencil); and ``var`` is the variable data to be written.
+The ``disp`` argument (meaning displacement) is an integer variable of kind MPI_OFFSET_KIND
+and of intent INOUT that keeps track of the location in the current file, assuming a new file is
+being written it should be initialised to ``0``. Subsequent calls to ``decomp_2d_write_var`` will
+update the value as data is added to the file. 
+
+When the variable to be written is not defined on the default grid, a more general form of the
+subroutine
 
 ::
    
       call decomp_2d_write_var(fh,disp,ipencil,var,opt_decomp)
 
-where the decomposition object ``opt_decomp`` describes the arbitrary size of the global array.
+accepts the decomposition object ``opt_decomp`` describing the arbitrary size of the global array.
 
-To create a restart/checkpointing file, it is often necessary to save key scalar variables as
+When creating a restart/checkpointing file, it is often necessary to save key scalar variables as
 well. This can be done using:
 
 ::
@@ -86,8 +91,10 @@ well. This can be done using:
 where ``var`` is a 1D array containing n scalars of the same data type. The supported data types
 are: real, complex and integer.
 
-These subroutines have corresponding read routines with exactly the same set of
-parameters. Applications are responsible for closing the file after everything is written (using
+These subroutines have corresponding read routines accepting the same set of
+parameters. 
+
+Applications are responsible for closing the file after everything is written (using
 MPI_FILE_CLOSE). Again, each chunk of data in the file contains one variable stored in its natural
 order. One major benefit is that it becomes very easy to read the data back into the application
 using a different number of MPI processes.
@@ -125,6 +132,9 @@ have indices of:
 
 * 1,n+1,2n+1... if from1 is ``.true.``
 * n,2n,3n... ff from1 is ``.false.``
+
+Note that the ADIOS2 interface does not support this operation, however compression can be enabled
+at runtime through the ADIOS2 configuration file (see ADIOS2 docs for further information).
 
 Quick I/O Reference
 -------------------
