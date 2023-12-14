@@ -165,7 +165,7 @@ An optional parameter may be passed to this initialisation routine:
 
  call decomp_2d_init(nx, ny, nz, p_row, p_col, periodic_bc)
   
-Here periodic_bc is a 1D array containing 3 logical values that specify whether periodic boundary condition 
+Here ``periodic_bc`` is a 1D array containing 3 logical values that specify whether periodic boundary condition 
 should apply in certain dimensions. Note this is only applicable if halo-cell communication is to be used.
 
 Another optional parameter may be passed at the initialization stage:
@@ -174,7 +174,7 @@ Another optional parameter may be passed at the initialization stage:
 
  call decomp_2d_init(nx, ny, nz, p_row, p_col, periodic_bc, comm)
   
-Here comm is the MPI communicator that the library will use. By default, MPI_COMM_WORLD is used.
+Here ``comm`` is the MPI communicator that the library will use. By default, MPI_COMM_WORLD is used.
 
 A key element of this library is a set of communication routines that actually perform the data transpositions. 
 As mentioned, one needs to perform 4 global transpositions to go through all 3 pencil orientations. 
