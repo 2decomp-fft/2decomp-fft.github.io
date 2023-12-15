@@ -153,8 +153,7 @@ The algorithm will choose the closest combination such as
 
 $$ n\_{row} = n\_{col} = {nproc}^{1/2} $$
 
-In case the root is not exact the closest combination to have $` n\_{row} \approx n\_{col} `$ with 
-$` n\_{row} < n\_{col} `$ is used.
+In case the root is not exact the closest combination to have $n_{row} \approx n_{col}$ with $n_{row} < n_{col}$ is used.
 If a 1D slab decomposition is needed instead of a 2D pencil one, it is recommended to set ``p_row`` to unity and ``p_col`` to ``nproc``.
 
 An optional parameter may be passed to this initialisation routine:
