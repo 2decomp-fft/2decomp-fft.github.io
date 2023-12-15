@@ -146,20 +146,24 @@ using the following call</p>
 </pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">nx</span></code>, <code class="docutils literal notranslate"><span class="pre">ny</span></code> and <code class="docutils literal notranslate"><span class="pre">nz</span></code> are the size of 3D global data to be distributed over
-a 2D processor grid <span class="math notranslate nohighlight">\(p_row \times p_col\)</span>.
+a 2D processor grid <code class="docutils literal notranslate"><span class="pre">p_row</span> <span class="pre">x</span> <span class="pre">p_col</span></code>.
 Note that none of the dimensions need to be divisible by <code class="docutils literal notranslate"><span class="pre">p_row</span></code> or <code class="docutils literal notranslate"><span class="pre">p_col</span></code>, i.e. the library can handle non-evenly distributed data.
 In case of <code class="docutils literal notranslate"><span class="pre">p_row=p_col=0</span></code> an automatic decomposition is selected among all possible combination available.
 The algorithm will choose the closest combination such as</p>
-<div class="math notranslate nohighlight">
-\[n\_proc=n\_col=\sqrt{nproc}\]</div>
-<p>In case the root is not exact the closest combitation to have <span class="math notranslate nohighlight">\(n\_proc \approx n\_col\)</span> with
-<cite>n_proc &lt;  n_col</cite> is used.</p>
+<p>$$ n_{row} = n_{col} = {nproc}^{1/2} $$</p>
+<p>In case the root is not exact the closest combination to $n_{row} = n_{col}$ with $n_{row} &lt; n_{col}$ is used.
+If a 1D slab decomposition is needed instead of a 2D pencil one, it is recommended to set <code class="docutils literal notranslate"><span class="pre">p_row</span></code> to unity and <code class="docutils literal notranslate"><span class="pre">p_col</span></code> to <code class="docutils literal notranslate"><span class="pre">nproc</span></code>.</p>
 <p>An optional parameter may be passed to this initialisation routine:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">,</span><span class="n">periodic_bc</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">,</span> <span class="n">periodic_bc</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Here periodic_bc is a 1D array containing 3 logical values that specify whether periodic boundary condition
+<p>Here <code class="docutils literal notranslate"><span class="pre">periodic_bc</span></code> is a 1D array containing 3 logical values that specify whether periodic boundary condition
 should apply in certain dimensions. Note this is only applicable if halo-cell communication is to be used.</p>
+<p>Another optional parameter may be passed at the initialization stage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_2d_init</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">p_row</span><span class="p">,</span> <span class="n">p_col</span><span class="p">,</span> <span class="n">periodic_bc</span><span class="p">,</span> <span class="n">comm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here <code class="docutils literal notranslate"><span class="pre">comm</span></code> is the MPI communicator that the library will use. By default, MPI_COMM_WORLD is used.</p>
 <p>A key element of this library is a set of communication routines that actually perform the data transpositions.
 As mentioned, one needs to perform 4 global transpositions to go through all 3 pencil orientations.
 Correspondingly, the library provides 4 communication subroutines:</p>
@@ -208,7 +212,7 @@ different data sets as 2D pencils.
 </pre></div>
 </div>
 <p>Here decomp is an instance of Fortran derived data type DECOMP_INFO encapsulating
-the 2D decomposition information associated with one particular global size <span class="math notranslate nohighlight">\(n1\times n2 \times n3\)</span>.
+the 2D decomposition information associated with one particular global size <code class="docutils literal notranslate"><span class="pre">n1</span> <span class="pre">x</span> <span class="pre">n2</span> <span class="pre">x</span> <span class="pre">n3</span></code>.
 The decomposition object can be initialised using the <code class="docutils literal notranslate"><span class="pre">decomp_info_init</span></code> routine as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">decomp_info_init</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span><span class="n">n2</span><span class="p">,</span><span class="n">n3</span><span class="p">,</span> <span class="n">new_decomp</span><span class="p">)</span>
 </pre></div>
