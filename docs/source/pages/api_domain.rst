@@ -151,11 +151,9 @@ Note that none of the dimensions need to be divisible by ``p_row`` or ``p_col``,
 In case of ``p_row=p_col=0`` an automatic decomposition is selected among all possible combination available. 
 The algorithm will choose the closest combination such as 
 
-$$
-n\_{row} = n\_{col} = \sqrt{nproc}
-$$
+$$ n\_{row} = n\_{col} = {nproc}^{1/2} $$
 
-In case the root is not exact the closest combination to have $ n\_row \approx n\_col $ with 
+In case the root is not exact the closest combination to have $ n\_{row} \approx n\_{col} $ with 
 $ n\_row < n\_col $ is used.
 If a 1D slab decomposition is needed instead of a 2D pencil one, it is recommended to set ``p_row`` to unity and ``p_col`` to ``nproc``.
 
