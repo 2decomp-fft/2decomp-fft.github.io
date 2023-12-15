@@ -146,14 +146,14 @@ using the following call
  call decomp_2d_init(nx, ny, nz, p_row, p_col)
 
 where ``nx``, ``ny`` and ``nz`` are the size of 3D global data to be distributed over 
-a 2D processor grid :math:`p_row \times p_col`. 
+a 2D processor grid ``p_row x p_col``. 
 Note that none of the dimensions need to be divisible by ``p_row`` or ``p_col``, i.e. the library can handle non-evenly distributed data.
 In case of ``p_row=p_col=0`` an automatic decomposition is selected among all possible combination available. 
 The algorithm will choose the closest combination such as 
 
 $$ n\_{row} = n\_{col} = {nproc}^{1/2} $$
 
-In case the root is not exact the closest combination to have $n_{row} \approx n_{col}$ with $n_{row} < n_{col}$ is used.
+In case the root is not exact the closest combination to $n_{row} = n_{col}$ with $n_{row} < n_{col}$ is used.
 If a 1D slab decomposition is needed instead of a 2D pencil one, it is recommended to set ``p_row`` to unity and ``p_col`` to ``nproc``.
 
 An optional parameter may be passed to this initialisation routine:
@@ -233,7 +233,7 @@ different data sets as 2D pencils.
   call decomp_info_init(n1, n2, n3, new_decomp)
 
 Here decomp is an instance of Fortran derived data type DECOMP_INFO encapsulating 
-the 2D decomposition information associated with one particular global size :math:`n1\times n2 \times n3`. 
+the 2D decomposition information associated with one particular global size ``n1 x n2 x n3``. 
 The decomposition object can be initialised using the ``decomp_info_init`` routine as:
 
 :: 
