@@ -153,10 +153,10 @@ The algorithm will choose the closest combination such as
 
 .. math::
 
-  n\_proc=n\_col=\sqrt{nproc}
+  n\_row=n\_col=\sqrt{nproc}
 
-In case the root is not exact the closest combitation to have :math:`n\_proc \approx n\_col` with 
-`n\_proc <  n\_col` is used.
+In case the root is not exact the closest combination to have :math:`n\_row \approx n\_col` with 
+`n\_row <  n\_col` is used.
 If a 1D slab decomposition is needed instead of a 2D pencil one, it is recommended to set ``p_row`` to unity and ``p_col`` to ``nproc``.
 
 An optional parameter may be passed to this initialisation routine:
