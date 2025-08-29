@@ -12,9 +12,18 @@ Here the first parameter var, a 3D input array, contains the normal pencil-distr
 
 As with the rest of the 2DECOMP&FFT library, a more general form of the routine is available (implemented using Fortran optional parameters):
 
-``call update_halo(var, var_halo, level, opt_decomp, opt_global)``
+``call update_halo(var, var_halo, level, opt_decomp, opt_global, opt_pencil)``
 
-This supports halo-cell communications among pencils with arbitrary global sizes, as described by `opt_decomp`, the decomposition object. The last optional parameter `opt_global` is required (to be set to .true.) if global coordinate is used to define the pencils, i.e. the input array var is defined using the start/end variables rather than size variables. This ensures the coordinate systems used by `var` and `var_halo` are consistent.
+This supports halo-cell communications among pencils with arbitrary global sizes, as described by
+`opt_decomp`, the decomposition object.
+The optional parameter `opt_global` is required (to be set to .true.) if global coordinate is used
+to define the pencils, i.e. the input array var is defined using the start/end variables rather than
+size variables.
+This ensures the coordinate systems used by `var` and `var_halo` are consistent.
+The optional parameter `opt_pencil` allows the user to specify which pencil they are operating in
+(`1=X,2=Y,3=Z`), our recommendation is to do so, the current interface makes this parameter optional
+to continue supporting the previous implementation which would try to determin the orientation
+automatically, however this may not be reliable.
 
 To demonstrate the use of this API, here is an example that computes spatial derivatives:
 
@@ -49,4 +58,58 @@ The extra parameter periodic_bc is a 1D array containing 3 logical values that s
 
 Like the rest of 2DECOMP&FFT, the halo-cell support API is implemented in a black-box fashion. The library internally handles the communications between neighbouring blocks using standard MPI non-blocking point-to-point communications.
 
-      
+-----------------------
+Halo-exchange interface
+-----------------------
+
+The high-level halo interface described above makes it easy to add halo support to existing codes.
+However, by handling the memory allocation for you, it is difficult to adopt in a code that is
+already written to handle its halos when porting to the 2DECOMP&FFT library.
+As described above, the `update_halo` interface operates in two phases:
+1) a new array, extended with halo entries is allocated
+2) local data is copied into the local region of this array and used to communicate halo values to
+neighbouring processes
+
+To facilitate the use of 2DECOMP&FFT by existing stencil codes we have exposed the data exchange
+(step 2) as a new interface `exchange_halo`.
+There are two behaviours of the interface based on the optional parameters `opt_depth` and
+`opt_levels`
+
+::
+  call halo_exchange(arr, ipencil, opt_depth, opt_levels)
+
+where `arr` is the working array, `ipencil=1,2,3` indicates the pencil orientation and the optional
+values `opt_depth` and `opt_levels` take scalar and array integer values to indicate the halo
+depths.
+The former sets the halo depth in the two perpendicular directions to the current pencil orientation
+and the latter allows an arbitrary depth of halo to be set
+in each axis of the current orientation.
+The working array is expected to be prepopulated with local data and of size
+`(nx+2*ih,ny+2*jh,nz+2*kh)`, where `ih,jh,kh` are the halo depths in each direction.
+To illustrate the use of `exchange_halo` the two calls
+
+::
+  call halo_exchange(vh, 1, opt_depth=1)
+  call halo_exchange(wh, 1, opt_levels=[0, 1, 1])
+
+are equivalent and will exchange halo data to depth 1 in the Y and Z axes for data in the X pencil.
+
+To aid users in creating suitably-sized arrays the allocation subroutines have been extended with
+optional halo parameters `opt_depth` and `opt_levels` whose meaning matches the above.
+When supplied with non-zero values 2DECOMP&FFT will allocate a halo-padded array to the requested
+depth.
+
+When a code is heavily dependent on halo exchanges, it may be repetitive to specify the halo depths
+at each exchange.
+In such cases, the user can specify a default depth for a given decomposition by setting
+
+::
+   decomp_info%xlevel = [ihx, jhx, khx]
+   decomp_info%ylevel = [ihy, jhy, khy]
+   decomp_info%zlevel = [ihz, jhz, khz]
+
+if `opt_depth/opt_levels` is not specified in the allocation, or halo exchange routines, then this
+value will be used (note that by default these are all set to `[0,0,0]`).
+
+We would like to acknowledge the work of S.Owens in the ARCHER2 eCSE05-03 project
+(https://www.archer2.ac.uk/ecse/reports/eCSE05-03/) who initially developed these interfaces.
