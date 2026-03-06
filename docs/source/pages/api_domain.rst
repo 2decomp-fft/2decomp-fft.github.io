@@ -96,23 +96,6 @@ following derived types:
 * ``xsz(i), ysz(i), zsz(i), i=1,2,3`` - the size for each sub-domain, as in the global coordinate system. 
 
 
-Arrays can also be stored on smaller mesh sizes where points are skipped: 
-
-* ``iskipS, jskipS, kskipS`` - points skipped in the x, y and z direction for a generic scalar field
-
-* ``iskipV, jskipV, kskipV`` - points skipped in the x, y and z direction for the velocity field
-
-* ``iskipP, jskipP, kskipP`` - points skipped in the x, y and z direction for the pressure field
-
-* ``xszS, yszS, zszS, xstS, ystS, zstS, xenS, yenS, zenS`` - size, starting and final indexes for the 
-  reduce size mesh for a generic scalar
-
-* ``xszV, yszV, zszV, xstV, ystV, zstV, xenV, yenV, zenV`` - size, starting and final indexes for the 
-  reduce size mesh for the velocity field
-
-* ``xszP, yszP, zszP, xstP, ystP, zstP, xenP, yenP, zenP`` - size, starting and final indexes for the 
-  reduce size mesh for the pressure field
-
 The module provides memory allocations API that are recomended to correctly define its major data structures 
 within the main program. It is recomended that all major arrays are defined as ``allocable``.
 
